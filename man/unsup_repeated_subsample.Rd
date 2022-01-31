@@ -4,7 +4,7 @@
 \alias{unsup_repeated_subsample}
 \title{Title}
 \usage{
-unsup_repeated_subsample(Y, alpha, k_val, n_resamp, new_Y)
+unsup_repeated_subsample(Y, alpha, k_val, n_resamp, new_Y = NULL)
 }
 \arguments{
 \item{new_Y}{(needs to be optional)}

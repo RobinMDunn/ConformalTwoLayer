@@ -9,7 +9,8 @@
 #' @export
 #'
 #' @examples
-unsup_repeated_subsample <- function(Y, alpha, k_val, n_resamp, new_Y) {
+unsup_repeated_subsample <- function(Y, alpha, k_val, n_resamp,
+                                     new_Y = NULL) {
 
   # Create matrix to store repeated subsamples of Y,
   # subsampling one observation from each of the k groups for each row.
@@ -27,11 +28,15 @@ unsup_repeated_subsample <- function(Y, alpha, k_val, n_resamp, new_Y) {
   }
 
   # Get average p-value at new_Y
-  new_Y_pval <- unsup_get_avg_pvalue(Y_subsample_mat = Y_subsample_mat,
-                                     point = new_Y)
+  if(!is.null(new_Y)) {
+    new_Y_pval <- unsup_get_avg_pvalue(Y_subsample_mat = Y_subsample_mat,
+                                       point = new_Y)
 
-  # Check whether new observation is inside interval
-  new_Y_covered <- as.numeric(new_Y_pval >= alpha)
+    # Check whether new observation is inside interval
+    new_Y_covered <- as.numeric(new_Y_pval >= alpha)
+  } else {
+    new_Y_covered <- NA
+  }
 
   # Get average p-values over grid
   grid_values <- quantile(Y, probs = seq(0, 1, by = 0.02))

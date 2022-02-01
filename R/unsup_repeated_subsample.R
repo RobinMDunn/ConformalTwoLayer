@@ -51,14 +51,14 @@ unsup_repeated_subsample <- function(Y, alpha, k_val, n_resamp,
   # Root solver to search for lower bound based on grid_pval_vec.
   # Approx. minimum value where avg_pvalue >= alpha.
   if(min(which(grid_pval_vec > alpha)) == 1) {
-    lower_bound_2alpha <-
+    lower_bound <-
       uniroot(f = function(x) unsup_get_avg_pvalue(Y_subsample_mat = Y_subsample_mat,
                                                    point = x) - (alpha - 0.0001),
               lower = min(Y) - 1,
               upper = min(Y),
               extendInt = "upX")$root
   } else {
-    lower_bound_2alpha <-
+    lower_bound <-
       uniroot(f = function(x) unsup_get_avg_pvalue(Y_subsample_mat = Y_subsample_mat,
                                                    point = x) - (alpha - 0.0001),
               lower = grid_values[min(which(grid_pval_vec > alpha)) - 1],
@@ -69,14 +69,14 @@ unsup_repeated_subsample <- function(Y, alpha, k_val, n_resamp,
   # Root solver to search for upper bound based on grid_pval_vec.
   # Approx. maximum value where avg_pvalue >= alpha.
   if(max(which(grid_pval_vec > alpha)) == 51) {
-    upper_bound_2alpha <-
+    upper_bound <-
       uniroot(f = function(x) unsup_get_avg_pvalue(Y_subsample_mat = Y_subsample_mat,
                                                    point = x) - (alpha - 0.0001),
               lower = max(Y),
               upper = max(Y) + 1,
               extendInt = "downX")$root
   } else {
-    upper_bound_2alpha <-
+    upper_bound <-
       uniroot(f = function(x) unsup_get_avg_pvalue(Y_subsample_mat = Y_subsample_mat,
                                                    point = x) - (alpha - 0.0001),
               lower = grid_values[max(which(grid_pval_vec > alpha))],
@@ -85,8 +85,8 @@ unsup_repeated_subsample <- function(Y, alpha, k_val, n_resamp,
   }
 
   # Store prediction interval bounds and whether new_Y is covered (if applicable)
-  results <- list(lower_bound_2alpha = lower_bound_2alpha,
-                  upper_bound_2alpha = upper_bound_2alpha,
+  results <- list(lower_bound = lower_bound,
+                  upper_bound = upper_bound,
                   new_Y_covered = new_Y_covered)
 
   # Return results

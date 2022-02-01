@@ -118,8 +118,8 @@ for(row in 1:nrow(results)) {
       covered_2alpha[sim] <- unsup_repeated_results$new_Y_covered
 
       # Store length of interval
-      pi_length_2alpha[sim] <- unsup_repeated_results$upper_bound_2alpha -
-        unsup_repeated_results$lower_bound_2alpha
+      pi_length_2alpha[sim] <- unsup_repeated_results$upper_bound -
+        unsup_repeated_results$lower_bound
 
     }
 

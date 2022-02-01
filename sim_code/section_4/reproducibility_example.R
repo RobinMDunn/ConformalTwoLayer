@@ -14,13 +14,16 @@ pred_ints <- data.table(sim = 1:1000,
                         method_3_ub = NA_real_)
 
 # Generate a single data set
-set.seed(20211220)
+set.seed(20211221)
 
 # Simulate data
 k_val <- 100
 n_val <- 100
 alpha <- 0.1
-Y <- unsup_generate_data(k = k_val, n = n_val, tau_sq = 1)
+
+# Simulate data
+xy_data <- sup_generate_data(k = k_val, n = n_val, mu = 0, tau_sq = 1, sigma_sq = 1)
+X_new <- 1
 
 # Set up progress bar
 pb <- progress_bar$new(format = paste0("sim :current / :total [:bar] :eta"),
@@ -34,8 +37,9 @@ for(i in 1:nrow(pred_ints)) {
 
   ###### Construct method 2 prediction interval #####
 
-  # Construct prediction interval from Y_subsample
-  method2_pred_int <- unsup_single_subsample(Y = Y, alpha = alpha, k_val = k_val)
+  # Construct prediction interval from xy_data
+  method2_pred_int <- sup_single_subsample(xy_data, alpha, n_val, k_val,
+                                           X_new = X_new)
 
   # Store method 2 results
   pred_ints[sim == i, method_2_lb := method2_pred_int$lower_bound]
@@ -43,15 +47,16 @@ for(i in 1:nrow(pred_ints)) {
 
   ###### Construct method 3 prediction interval #####
 
+  # Construct prediction interval from xy_data
   n_resamp <- 100
 
   method3_pred_int <-
-    unsup_repeated_subsample(Y = Y, alpha = alpha, k_val = k_val,
-                             n_resamp = n_resamp)
+    sup_repeated_subsample(xy_data = xy_data, alpha = alpha, n_val = n_val,
+                           k_val = k_val, n_resamp = n_resamp, X_new = X_new)
 
   # Store method 3 results
-  pred_ints[sim == i, method_3_lb := method3_pred_int$lower_bound_2alpha]
-  pred_ints[sim == i, method_3_ub := method3_pred_int$upper_bound_2alpha]
+  pred_ints[sim == i, method_3_lb := method3_pred_int$lower_bound]
+  pred_ints[sim == i, method_3_ub := method3_pred_int$upper_bound]
 
 }
 
@@ -64,4 +69,4 @@ summary(pred_ints$method_3_ub)
 
 # Save results
 fwrite(pred_ints,
-       file = "data/unsupervised/method_2/method_2_3_bounds.csv")
+       file = "data/supervised/method_2/method_2_3_bounds.csv")

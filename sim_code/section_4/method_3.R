@@ -97,14 +97,14 @@ for(row in 1:nrow(results)) {
       # Generate new X and Y observation
       new_xy_data <- sup_generate_data(k = 1, n = 1, mu = mu_val,
                                        tau_sq = tau_sq_val, sigma_sq = 1)
-      X_new <- unlist(new_xy_data$X)
-      Y_new <- unlist(new_xy_data$Y)
 
       # Get prediction interval size and whether new (X, Y) is covered
       sup_rep_sub_results <-
-        sup_repeated_subsample(xy_data = xy_data, alpha = alpha, n_val = n_val,
+        sup_repeated_subsample(xy_data = xy_data,
+                               model_formula = formula(Y ~ X1 - 1),
+                               alpha = alpha, n_val = n_val,
                                k_val = k_val, n_resamp = n_resamp,
-                               X_new = X_new, Y_new = Y_new)
+                               new_xy_data = new_xy_data)
 
       covered_2alpha[sim] <- sup_rep_sub_results$covered
 

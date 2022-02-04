@@ -4,7 +4,14 @@
 \alias{sup_pool_cdfs_split}
 \title{Title}
 \usage{
-sup_pool_cdfs_split(xy_data, alpha, k_val, k_model_fit, X_new, Y_new = NULL)
+sup_pool_cdfs_split(
+  xy_data,
+  model_formula,
+  alpha,
+  k_val,
+  k_model_fit,
+  new_xy_data
+)
 }
 \arguments{
 \item{Y_new}{}

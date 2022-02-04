@@ -6,12 +6,12 @@
 \usage{
 sup_repeated_subsample(
   xy_data,
+  model_formula,
   alpha,
   n_val,
   k_val,
   n_resamp,
-  X_new,
-  Y_new = NULL
+  new_xy_data
 )
 }
 \arguments{

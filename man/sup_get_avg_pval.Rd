@@ -4,7 +4,7 @@
 \alias{sup_get_avg_pval}
 \title{Function to get average p-val}
 \usage{
-sup_get_avg_pval(X_subsample_mat, Y_subsample_mat, X_new, Y_new)
+sup_get_avg_pval(xy_subsample_list, model_formula, X_new, Y_new)
 }
 \arguments{
 \item{Y_new}{}

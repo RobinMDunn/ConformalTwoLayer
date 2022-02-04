@@ -11,15 +11,20 @@
 #' @export
 #'
 #' @examples
-sup_single_subsample <- function(xy_data, alpha, n_val, k_val,
-                                 X_new, Y_new = NULL) {
+sup_single_subsample <- function(xy_data, model_formula, alpha, n_val, k_val,
+                                 new_xy_data) {
 
   # Sample one (X,Y) from each of the k groups.
   index <- sample(1:n_val, size = k_val, replace = TRUE)
-  X_sample <- sapply(as.list(1:k_val),
-                     FUN = function(m) xy_data$X[[m]][index[m]])
-  Y_sample <- sapply(as.list(1:k_val),
-                     FUN = function(m) xy_data$Y[[m]][index[m]])
+
+  xy_sample <-
+    do.call("rbind",
+            lapply(1:k_val,
+                   FUN = function(i) xy_data[xy_data$Subject == i, ][index[i], ]))
+
+  # Extra new X data
+  X_new <- dplyr::select(new_xy_data,
+                         formula.tools::rhs.vars(model_formula))
 
   # Get p-values over a grid of Y_new values
   grid_values <- seq(-10, 10, by = 1)
@@ -27,15 +32,19 @@ sup_single_subsample <- function(xy_data, alpha, n_val, k_val,
   grid_pval_vec <- rep(NA, length(grid_values))
 
   for(val in 1:length(grid_values)) {
-    grid_pval_vec[val] <- sup_get_pval(X_sample = X_sample, Y_sample = Y_sample,
+
+    grid_pval_vec[val] <- sup_get_pval(xy_sample = xy_sample,
+                                       model_formula = model_formula,
                                        X_new = X_new,
                                        Y_new = grid_values[val])
+
   }
 
   # Use root solver to get bounds of conformal interval
   # Approx. minimum Y_new where pval >= alpha.
   lower_bound <-
-    uniroot(f = function(x) sup_get_pval(X_sample = X_sample, Y_sample = Y_sample,
+    uniroot(f = function(x) sup_get_pval(xy_sample = xy_sample,
+                                         model_formula = model_formula,
                                          X_new = X_new,
                                          Y_new = x) - (alpha - 0.0001),
             lower = min(grid_values[grid_pval_vec > alpha]) - 1,
@@ -44,7 +53,8 @@ sup_single_subsample <- function(xy_data, alpha, n_val, k_val,
 
   # Approx. maximum Y_new where pval >= alpha.
   upper_bound <-
-    uniroot(f = function(x) sup_get_pval(X_sample = X_sample, Y_sample = Y_sample,
+    uniroot(f = function(x) sup_get_pval(xy_sample = xy_sample,
+                                         model_formula = model_formula,
                                          X_new = X_new,
                                          Y_new = x) - (alpha - 0.0001),
             lower = max(grid_values[grid_pval_vec > alpha]),
@@ -55,16 +65,24 @@ sup_single_subsample <- function(xy_data, alpha, n_val, k_val,
   pred_int_size <- upper_bound - lower_bound
 
   # If we observe Y_new, check whether (X_new, Y_new) is inside interval
-  if(is.null(Y_new)) {
+  Y_new_observed <- as.character(formula.tools::lhs(model_formula)) %in%
+    colnames(new_xy_data)
+
+  if(Y_new_observed == FALSE) {
 
     covered <- NA
 
   } else {
 
+    # Extract Y_new
+    Y_new <- new_xy_data %>% dplyr::select(formula.tools::lhs(model_formula))
+
     # Check whether new observation is inside interval
     covered <- as.numeric(
-      sup_get_pval(X_sample = X_sample, Y_sample = Y_sample,
-                   X_new = X_new, Y_new = Y_new) >= alpha)
+      sup_get_pval(xy_sample = xy_sample,
+                   model_formula = model_formula,
+                   X_new = X_new,
+                   Y_new = Y_new) >= alpha)
 
   }
 

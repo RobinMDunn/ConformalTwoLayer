@@ -4,7 +4,7 @@
 \alias{sup_get_pval}
 \title{Function to get p-val}
 \usage{
-sup_get_pval(X_sample, Y_sample, X_new, Y_new)
+sup_get_pval(xy_sample, model_formula, X_new, Y_new)
 }
 \arguments{
 \item{Y_new}{}

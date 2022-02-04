@@ -7,21 +7,28 @@
 #'
 #' @return
 #' @export
+#' @import formula.tools, tidyverse
 #'
 #' @examples
-sup_get_pval <- function(X_sample, Y_sample, X_new, Y_new) {
+sup_get_pval <- function(xy_sample, model_formula, X_new, Y_new) {
 
-  # Combine sample with new observation
-  X_aug <- c(X_new, X_sample)
-  Y_aug <- c(Y_new, Y_sample)
+  # Rename Y_new to agree with LHS of model_formula
+  xy_new <- cbind(X_new, Y_new)
+  colnames(xy_new)[colnames(xy_new) == "Y_new"] <- lhs.vars(model_formula)
+
+  # Only save xy_sample columns needed for model_formula
+  xy_sample <- xy_sample %>% dplyr::select(lhs.vars(model_formula),
+                                           rhs.vars(model_formula))
+
+  # Combine (X_new, Y_new) and xy_sample
+  xy_aug <- rbind(xy_new, xy_sample)
 
   # Fit model with augmented sample
-  lm.fit <- lm(Y_aug ~ X_aug - 1)
-  pred.fit <- lm.fit$fitted
-  R <- abs(Y_aug - pred.fit)
+  lm.fit <- lm(formula = model_formula, data = xy_aug)
+  R <- abs(lm.fit$residuals)
 
   # Get p-value
-  pval <- sum(R >= R[1]) / length(Y_aug)
+  pval <- sum(R >= R[1]) / length(R)
 
   return(pval)
 }

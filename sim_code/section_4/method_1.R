@@ -68,9 +68,6 @@ for(row in 1:nrow(results)) {
 
   n_val <- results[row, n]
 
-  # Set seed - depends on k and n
-  set.seed(k_val + n_val)
-
   # Set up progress bar
   pb <- progress_bar$new(format = "Row :current / :total [:bar] :eta",
                          total = n_sim, clear = T, show_after = 0)
@@ -88,18 +85,17 @@ for(row in 1:nrow(results)) {
     # Fit model on pooled data from half of the groups
     k_model_fit <- sample(x = k_val, size = floor(k_val/2), replace = FALSE)
 
-
     # Generate new X and Y observation
     new_xy_data <- sup_generate_data(k = 1, n = 1, mu = mu_val,
                                      tau_sq = tau_sq_val, sigma_sq = 1)
-    X_new <- unlist(new_xy_data$X)
-    Y_new <- unlist(new_xy_data$Y)
 
     # Get prediction interval size and whether new (X, Y) is covered
     sup_pool_cdf_results <-
-      sup_pool_cdfs_split(xy_data = xy_data, alpha = alpha, k_val = k_val,
-                          k_model_fit = k_model_fit,
-                          X_new = X_new, Y_new = Y_new)
+      sup_pool_cdfs_split(xy_data = xy_data,
+                          model_formula = formula(Y ~ X1 - 1),
+                          alpha = alpha,
+                          k_val = k_val, k_model_fit = k_model_fit,
+                          new_xy_data = new_xy_data)
 
     covered[sim] <- sup_pool_cdf_results$covered
 

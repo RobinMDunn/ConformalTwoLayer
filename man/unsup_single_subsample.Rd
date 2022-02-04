@@ -4,7 +4,7 @@
 \alias{unsup_single_subsample}
 \title{Title}
 \usage{
-unsup_single_subsample(Y, alpha, k_val)
+unsup_single_subsample(Y, alpha, k_val, new_Y = NULL)
 }
 \arguments{
 \item{k_val}{}

@@ -80,9 +80,6 @@ for(row in 1:nrow(results)) {
   # Extract k
   k_val <- results[row, k]
 
-  # Set seed
-  set.seed(k_val)
-
   # Keep coverage and length as NA unless k > 2/alpha - 1
   if(k_val > 2 / alpha - 1) {
 
@@ -106,11 +103,10 @@ for(row in 1:nrow(results)) {
                                  n_resamp = n_resamp, new_Y = new_Y)
 
       # Check whether new observation is inside interval
-      covered_2alpha[sim] <- unsup_repeated_results$new_Y_covered
+      covered_2alpha[sim] <- unsup_repeated_results$covered
 
       # Store length of interval
-      pi_length_2alpha[sim] <- unsup_repeated_results$upper_bound -
-        unsup_repeated_results$lower_bound
+      pi_length_2alpha[sim] <- unsup_repeated_results$pred_int_size
 
     }
 

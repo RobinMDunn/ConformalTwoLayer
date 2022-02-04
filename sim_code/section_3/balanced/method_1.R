@@ -46,9 +46,6 @@ if (length(args) > 0) {
 # Set alpha level
 alpha <- 0.1
 
-# Read in functions. (Set working directory to Conformal_Order_Stats)
-sourceDirectory("code/unsupervised/functions", modifiedOnly = FALSE)
-
 # Construct vectors of k values and n values
 all_k <- c(seq(5, 100, by = 5), seq(200, 1000, by = 100))
 
@@ -102,19 +99,19 @@ for(row in 1:nrow(results)) {
     Y <- unsup_generate_data(k = k_val, n_vec = rep(n_val, times = k_val),
                              tau_sq = tau_sq_val)
 
-    # Prediction interval for new observation
-    pred_int <- unsup_pool_cdfs(Y = Y, alpha = alpha)
-
     # Generate a single new observation from a new group
     new_Y <- as.numeric(unsup_generate_data(k = 1, n_vec = 1,
                                             tau_sq = tau_sq_val))
 
+    # Prediction interval for new observation
+    unsup_pool_results <- unsup_pool_cdfs(Y = Y, alpha = alpha, new_Y = new_Y)
+
     # Check whether new observation is inside interval
-    covered[sim] <- as.numeric(unsup_avg_ecdf(Y = Y, threshold = new_Y) >= alpha/2 &
-                                 unsup_avg_ecdf(Y = Y, threshold = new_Y) < 1 - alpha/2)
+    covered[sim] <- unsup_pool_results$covered
 
     # Store length of interval
-    pred_int_length[sim] <- pred_int$upper_bound - pred_int$lower_bound
+    pred_int_length[sim] <- unsup_pool_results$pred_int_size
+
   }
 
   # Store coverage proportion
@@ -124,6 +121,10 @@ for(row in 1:nrow(results)) {
   results[row, avg_length := mean(pred_int_length)]
 
 }
+
+results
+results
+
 # Save simulation results. Label with start/end k and tau_sq values.
 
 # fwrite(results,

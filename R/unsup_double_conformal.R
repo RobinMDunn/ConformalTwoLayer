@@ -16,7 +16,7 @@
 #'
 #' @return
 #' @export
-unsup_double_conformal <- function(Y, alpha, n_val) {
+unsup_double_conformal <- function(Y, alpha, n_val, new_Y = NULL) {
 
   # Construct 1-alpha/2 prediction intervals for each group/column.
   # There are n_val observations per group.
@@ -47,7 +47,27 @@ unsup_double_conformal <- function(Y, alpha, n_val) {
   pred_int <- list(lower_bound = lower_bound_pred_int$lower_bound,
                    upper_bound = upper_bound_pred_int$upper_bound)
 
-  # Return prediction interval
+  # Size of prediction interval
+  pred_int_size <- pred_int$upper_bound - pred_int$lower_bound
+
+  # Check whether new observation is inside interval
+  if(!is.null(new_Y)) {
+
+    covered <- as.numeric(pred_int$lower_bound <= new_Y &
+                            new_Y <= pred_int$upper_bound)
+
+  } else {
+
+    covered <- NA
+
+  }
+
+  # Return prediction interval, interval size, and whether new Y is covered
+  return(list(pred_int_size = pred_int_size,
+              lower_bound = pred_int$lower_bound,
+              upper_bound = pred_int$upper_bound,
+              covered = covered))
+
   return(pred_int)
 }
 

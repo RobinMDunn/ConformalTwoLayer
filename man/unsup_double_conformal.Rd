@@ -4,7 +4,7 @@
 \alias{unsup_double_conformal}
 \title{Construct unsupervised double conformal prediction interval.}
 \usage{
-unsup_double_conformal(Y, alpha, n_val)
+unsup_double_conformal(Y, alpha, n_val, new_Y = NULL)
 }
 \arguments{
 \item{n_val}{}

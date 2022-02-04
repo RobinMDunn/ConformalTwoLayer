@@ -63,14 +63,6 @@ covered <- rep(NA, n_sim)
 
 pred_int_length <- rep(NA, n_sim)
 
-# Evaluate average empirical CDF at a certain point
-avg_ecdf_unbal <- function(Y_small, Y_large, point) {
-  ecdf_small <- apply(Y_small, MARGIN = 2, FUN = function(x) mean(x <= point))
-  ecdf_large <- apply(Y_large, MARGIN = 2, FUN = function(x) mean(x <= point))
-  mean_ecdf <- mean(c(ecdf_small, ecdf_large))
-  return(mean_ecdf)
-}
-
 # Set up progress bar
 pb <- progress_bar$new(format = paste0("[:bar] sim :current / :total :eta"),
                        total = n_sim * length(k_vec), clear = T,
@@ -94,18 +86,18 @@ for(row in 1:nrow(results)) {
                              n_vec = c(rep(n_small, times = k_val - 1), n_large),
                              tau_sq = 100, sigma_sq = 0.1)
 
-    # Prediction interval for new observation
-    pred_int <- unsup_pool_cdfs(Y = Y, alpha = alpha)
-
     # Generate a single new observation from a new group
     new_Y <- unsup_generate_data(k = 1, n_vec = 1, tau_sq = 100, sigma_sq = 0.1)
 
+    # Prediction interval for new observation
+    unsup_pool_results <- unsup_pool_cdfs(Y = Y, alpha = alpha, new_Y = new_Y)
+
     # Check whether new observation is inside interval
-    covered[sim] <- as.numeric(unsup_avg_ecdf(Y = Y, threshold = new_Y) >= alpha/2 &
-                                 unsup_avg_ecdf(Y = Y, threshold = new_Y) < 1 - alpha/2)
+    covered[sim] <- unsup_pool_results$covered
 
     # Store length of interval
-    pred_int_length[sim] <- pred_int$upper_bound - pred_int$lower_bound
+    pred_int_length[sim] <- unsup_pool_results$pred_int_size
+
   }
 
   # Store coverage proportion

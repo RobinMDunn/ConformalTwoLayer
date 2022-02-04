@@ -33,9 +33,12 @@ unsup_repeated_subsample <- function(Y, alpha, k_val, n_resamp,
                                        point = new_Y)
 
     # Check whether new observation is inside interval
-    new_Y_covered <- as.numeric(new_Y_pval >= alpha)
+    covered <- as.numeric(new_Y_pval >= alpha)
+
   } else {
-    new_Y_covered <- NA
+
+    covered <- NA
+
   }
 
   # Get average p-values over grid
@@ -84,10 +87,14 @@ unsup_repeated_subsample <- function(Y, alpha, k_val, n_resamp,
               extendInt = "downX")$root
   }
 
+  # Size of prediction interval
+  pred_int_size <- upper_bound - lower_bound
+
   # Store prediction interval bounds and whether new_Y is covered (if applicable)
-  results <- list(lower_bound = lower_bound,
+  results <- list(pred_int_size = pred_int_size,
+                  lower_bound = lower_bound,
                   upper_bound = upper_bound,
-                  new_Y_covered = new_Y_covered)
+                  covered = covered)
 
   # Return results
   return(results)

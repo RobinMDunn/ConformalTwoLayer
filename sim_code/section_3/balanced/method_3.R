@@ -118,11 +118,10 @@ for(row in 1:nrow(results)) {
                                  n_resamp = n_resamp, new_Y = new_Y)
 
       # Check whether new observation is inside interval
-      covered_2alpha[sim] <- unsup_repeated_results$new_Y_covered
+      covered_2alpha[sim] <- unsup_repeated_results$covered
 
       # Store length of interval
-      pi_length_2alpha[sim] <- unsup_repeated_results$upper_bound -
-        unsup_repeated_results$lower_bound
+      pi_length_2alpha[sim] <- unsup_repeated_results$pred_int_size
 
     }
 
@@ -135,6 +134,9 @@ for(row in 1:nrow(results)) {
   }
 
 }
+
+results
+results
 
 # Save simulation results. Label with start/end k, n, and tau_sq values.
 

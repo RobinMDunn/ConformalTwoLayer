@@ -7,7 +7,7 @@
 #' @export
 #'
 #' @examples
-unsup_pool_cdfs <- function(Y, alpha) {
+unsup_pool_cdfs <- function(Y, alpha, new_Y = NULL) {
 
   # Get average of ECDFs over grid
   grid_values <- quantile(unlist(Y), probs = seq(0, 1, by = 0.02))
@@ -50,10 +50,27 @@ unsup_pool_cdfs <- function(Y, alpha) {
               extendInt = "upX")$root
   }
 
-  # Prediction interval for new observation
-  pred_int <- list(lower_bound = lower_bound,
-                   upper_bound = upper_bound)
+  # Size of prediction interval
+  pred_int_size <- upper_bound - lower_bound
 
-  # Return prediction interval
+  # Check whether new observation is inside interval
+  if(!is.null(new_Y)) {
+
+    covered <-
+      as.numeric(unsup_avg_ecdf(Y = Y, threshold = new_Y) >= alpha/2 &
+                   unsup_avg_ecdf(Y = Y, threshold = new_Y) < 1 - alpha/2)
+
+  } else {
+
+    covered <- NA
+
+  }
+
+  # Return prediction interval, interval size, and whether new Y is covered
+  return(list(pred_int_size = pred_int_size,
+              lower_bound = lower_bound,
+              upper_bound = upper_bound,
+              covered = covered))
+
   return(pred_int)
 }

@@ -4,7 +4,7 @@
 \alias{unsup_pool_cdfs}
 \title{Title}
 \usage{
-unsup_pool_cdfs(Y, alpha)
+unsup_pool_cdfs(Y, alpha, new_Y = NULL)
 }
 \arguments{
 \item{alpha}{}

@@ -114,18 +114,20 @@ for(row in 1:nrow(results)) {
       Y <- unsup_generate_data(k = k_val, n_vec = rep(n_val, times = k_val),
                                tau_sq = tau_sq_val)
 
-      # Prediction interval for new observation
-      pred_int <- unsup_double_conformal(Y = Y, alpha = alpha, n_val = n_val)
-
       # Generate a single new observation from a new group
-      new_Y <- as.numeric(unsup_generate_data(k = 1, n_vec = 1, tau_sq = tau_sq_val))
+      new_Y <- as.numeric(unsup_generate_data(k = 1, n_vec = 1,
+                                              tau_sq = tau_sq_val))
+
+      # Prediction interval for new observation
+      unsup_double_results <-
+        unsup_double_conformal(Y = Y, alpha = alpha, n_val = n_val,
+                               new_Y = new_Y)
 
       # Check whether new observation is inside interval
-      covered[sim] <- as.numeric(pred_int$lower_bound <= new_Y &
-                                   new_Y <= pred_int$upper_bound)
+      covered[sim] <- unsup_double_results$covered
 
       # Store length of interval
-      pred_int_length[sim] <- pred_int$upper_bound - pred_int$lower_bound
+      pred_int_length[sim] <- unsup_double_results$pred_int_size
     }
 
     # Store coverage proportion

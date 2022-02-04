@@ -90,19 +90,21 @@ for(row in 1:nrow(results)) {
                                n_vec = c(rep(n_small, times = k_val - 1), n_large),
                                tau_sq = 100, sigma_sq = 0.1)
 
-      # Construct prediction interval
-      pred_int <- unsup_single_subsample(Y = Y, alpha = alpha, k_val = k_val)
-
       # Generate a single new observation from a new group
       new_Y <- as.numeric(unsup_generate_data(k = 1, n_vec = 1,
                                               tau_sq = 100, sigma_sq = 0.1))
 
+      # Construct prediction interval
+      unsup_single_sub_results <-
+        unsup_single_subsample(Y = Y, alpha = alpha, k_val = k_val,
+                               new_Y = new_Y)
+
       # Check whether new observation is inside interval
-      covered[sim] <- as.numeric(pred_int$lower_bound <= new_Y &
-                                   new_Y <= pred_int$upper_bound)
+      covered[sim] <- unsup_single_sub_results$covered
 
       # Store length of interval
-      pred_int_length[sim] <- pred_int$upper_bound - pred_int$lower_bound
+      pred_int_length[sim] <- unsup_single_sub_results$pred_int_size
+
     }
 
     # Store coverage proportion

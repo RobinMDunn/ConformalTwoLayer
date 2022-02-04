@@ -11,7 +11,7 @@
 unsup_single_subsample <- function(Y, alpha, k_val) {
 
   # Sample one observation from each of the k groups
-  Y_subsample <- apply(Y, MARGIN = 2, FUN = function(x) sample(x, 1))
+  Y_subsample <- sapply(Y, FUN = function(x) sample(x, 1))
 
   # Construct prediction interval from Y_subsample
   pred_int <- unsup_pooled_pred_int(Y = Y_subsample, alpha = alpha,

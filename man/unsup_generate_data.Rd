@@ -4,10 +4,10 @@
 \alias{unsup_generate_data}
 \title{Title}
 \usage{
-unsup_generate_data(k, n, tau_sq, sigma_sq = 1)
+unsup_generate_data(k, n_vec, tau_sq, sigma_sq = 1)
 }
 \arguments{
-\item{tau_sq}{}
+\item{sigma_sq}{}
 }
 \value{
 

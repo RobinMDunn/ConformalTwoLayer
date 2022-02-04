@@ -26,6 +26,8 @@
 suppressMessages(library(R.utils))
 suppressMessages(library(progress))
 suppressMessages(library(data.table))
+library(devtools)
+load_all()
 
 # Read in arguments for start/end k (number of groups),
 # start/end n (number of observations per group),
@@ -104,10 +106,11 @@ for(row in 1:nrow(results)) {
       pb$tick()
 
       # Simulate data
-      Y <- unsup_generate_data(k = k_val, n = n_val, tau_sq = tau_sq_val)
+      Y <- unsup_generate_data(k = k_val, n_vec = rep(n_val, times = k_val),
+                               tau_sq = tau_sq_val)
 
       # Generate a single new observation from a new group
-      new_Y <- as.numeric(unsup_generate_data(k = 1, n = 1, tau_sq = tau_sq_val))
+      new_Y <- as.numeric(unsup_generate_data(k = 1, n_vec = 1, tau_sq = tau_sq_val))
 
       # Construct prediction set and check whether new_Y is in set
       unsup_repeated_results <-
@@ -135,8 +138,8 @@ for(row in 1:nrow(results)) {
 
 # Save simulation results. Label with start/end k, n, and tau_sq values.
 
-fwrite(results,
-       file = paste0("data/unsupervised/method_3/method_3_k_",
-                     start_k, "_", end_k,
-                     "_n_", start_n, "_", end_n,
-                     "_tausq_", tau_sq, ".csv"))
+# fwrite(results,
+#        file = paste0("data/unsupervised/method_3/method_3_k_",
+#                      start_k, "_", end_k,
+#                      "_n_", start_n, "_", end_n,
+#                      "_tausq_", tau_sq, ".csv"))

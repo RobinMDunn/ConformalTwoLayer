@@ -27,6 +27,8 @@
 suppressMessages(library(R.utils))
 suppressMessages(library(progress))
 suppressMessages(library(data.table))
+library(devtools)
+load_all()
 
 # Read in arguments for start/end k (number of groups),
 # start/end n (number of observations per group),
@@ -109,13 +111,14 @@ for(row in 1:nrow(results)) {
       pb$tick()
 
       # Simulate data
-      Y <- unsup_generate_data(k = k_val, n = n_val, tau_sq = tau_sq_val)
+      Y <- unsup_generate_data(k = k_val, n_vec = rep(n_val, times = k_val),
+                               tau_sq = tau_sq_val)
 
       # Prediction interval for new observation
       pred_int <- unsup_double_conformal(Y = Y, alpha = alpha, n_val = n_val)
 
       # Generate a single new observation from a new group
-      new_Y <- as.numeric(unsup_generate_data(k = 1, n = 1, tau_sq = tau_sq_val))
+      new_Y <- as.numeric(unsup_generate_data(k = 1, n_vec = 1, tau_sq = tau_sq_val))
 
       # Check whether new observation is inside interval
       covered[sim] <- as.numeric(pred_int$lower_bound <= new_Y &
@@ -135,9 +138,9 @@ for(row in 1:nrow(results)) {
 }
 
 # Save simulation results. Label with start/end k and tau_sq values.
-fwrite(results,
-       file = paste0("data/unsupervised/method_0/method_0_k_",
-                     start_k, "_", end_k,
-                     "_n_", start_n, "_", end_n,
-                     "_tausq_", start_tau_sq_text, "_",
-                     end_tau_sq_text, ".csv"))
+# fwrite(results,
+#        file = paste0("data/unsupervised/method_0/method_0_k_",
+#                      start_k, "_", end_k,
+#                      "_n_", start_n, "_", end_n,
+#                      "_tausq_", start_tau_sq_text, "_",
+#                      end_tau_sq_text, ".csv"))

@@ -21,6 +21,8 @@
 suppressMessages(library(R.utils))
 suppressMessages(library(progress))
 suppressMessages(library(data.table))
+library(devtools)
+load_all()
 
 # Read in arguments for start/end k (number of groups),
 # start/end n (number of observations per group),
@@ -97,13 +99,15 @@ for(row in 1:nrow(results)) {
     pb$tick()
 
     # Simulate data
-    Y <- unsup_generate_data(k = k_val, n = n_val, tau_sq = tau_sq_val)
+    Y <- unsup_generate_data(k = k_val, n_vec = rep(n_val, times = k_val),
+                             tau_sq = tau_sq_val)
 
     # Prediction interval for new observation
     pred_int <- unsup_pool_cdfs(Y = Y, alpha = alpha)
 
     # Generate a single new observation from a new group
-    new_Y <- as.numeric(unsup_generate_data(k = 1, n = 1, tau_sq = tau_sq_val))
+    new_Y <- as.numeric(unsup_generate_data(k = 1, n_vec = 1,
+                                            tau_sq = tau_sq_val))
 
     # Check whether new observation is inside interval
     covered[sim] <- as.numeric(unsup_avg_ecdf(Y = Y, threshold = new_Y) >= alpha/2 &
@@ -120,11 +124,10 @@ for(row in 1:nrow(results)) {
   results[row, avg_length := mean(pred_int_length)]
 
 }
-
 # Save simulation results. Label with start/end k and tau_sq values.
 
-fwrite(results,
-       file = paste0("data/unsupervised/method_1/method_1_k_",
-                     start_k, "_", end_k,
-                     "_n_", start_n, "_", end_n,
-                     "_tausq_", tau_sq, ".csv"))
+# fwrite(results,
+#        file = paste0("data/unsupervised/method_1/method_1_k_",
+#                      start_k, "_", end_k,
+#                      "_n_", start_n, "_", end_n,
+#                      "_tausq_", tau_sq, ".csv"))

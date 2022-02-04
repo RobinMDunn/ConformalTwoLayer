@@ -10,7 +10,7 @@
 unsup_pool_cdfs <- function(Y, alpha) {
 
   # Get average of ECDFs over grid
-  grid_values <- quantile(Y, probs = seq(0, 1, by = 0.02))
+  grid_values <- quantile(unlist(Y), probs = seq(0, 1, by = 0.02))
 
   grid_pval_vec <- rep(NA, length(grid_values))
 

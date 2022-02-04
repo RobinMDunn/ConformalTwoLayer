@@ -8,6 +8,6 @@
 #'
 #' @examples
 unsup_avg_ecdf <- function(Y, threshold) {
-  ecdf_all <- apply(Y, MARGIN = 2, FUN = function(x) mean(x <= threshold))
+  ecdf_all <- sapply(Y, FUN = function(x) mean(x <= threshold))
   return(mean(ecdf_all))
 }

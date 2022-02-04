@@ -21,9 +21,9 @@ unsup_double_conformal <- function(Y, alpha, n_val) {
   # Construct 1-alpha/2 prediction intervals for each group/column.
   # There are n_val observations per group.
   group_pred_ints <-
-    apply(Y, MARGIN = 2,
-          FUN = function(x) unsup_pooled_pred_int(Y = x, alpha = alpha/2,
-                                                  n_obs = n_val))
+    lapply(Y,
+           FUN = function(x) unsup_pooled_pred_int(Y = x, alpha = alpha/2,
+                                                   n_obs = n_val))
 
   # Get all lower bounds
   lower_bounds <- sapply(group_pred_ints, FUN = function(x) x$lower_bound)

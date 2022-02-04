@@ -18,7 +18,7 @@ unsup_repeated_subsample <- function(Y, alpha, k_val, n_resamp,
 
   for(resamp in 1:nrow(Y_subsample_mat)) {
     # Sample one observation from each of the k groups
-    Y_subsample <- apply(Y, MARGIN = 2, FUN = function(x) sample(x, 1))
+    Y_subsample <- sapply(Y, FUN = function(x) sample(x, 1))
 
     # Sort observations in subsample
     Y_sorted <- sort(Y_subsample)
@@ -39,7 +39,7 @@ unsup_repeated_subsample <- function(Y, alpha, k_val, n_resamp,
   }
 
   # Get average p-values over grid
-  grid_values <- quantile(Y, probs = seq(0, 1, by = 0.02))
+  grid_values <- quantile(unlist(Y), probs = seq(0, 1, by = 0.02))
 
   grid_pval_vec <- rep(NA, length(grid_values))
 

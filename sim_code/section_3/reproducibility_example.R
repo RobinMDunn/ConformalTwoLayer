@@ -5,6 +5,8 @@ library(R.utils)
 library(data.table)
 library(tidyverse)
 library(progress)
+library(devtools)
+load_all()
 
 # Data frame to store results
 pred_ints <- data.table(sim = 1:1000,
@@ -20,13 +22,15 @@ set.seed(20211220)
 k_val <- 100
 n_val <- 100
 alpha <- 0.1
-Y <- unsup_generate_data(k = k_val, n = n_val, tau_sq = 1)
+Y <- unsup_generate_data(k = k_val, n_vec = rep(n_val, times = k_val),
+                         tau_sq = 1)
 
 # Set up progress bar
 pb <- progress_bar$new(format = paste0("sim :current / :total [:bar] :eta"),
                        total = nrow(pred_ints), clear = T, show_after = 0)
 
 # Repeatedly simulate methods 2 and 3
+#for(i in 1:nrow(pred_ints)) {
 for(i in 1:nrow(pred_ints)) {
 
   # Update progress bar
@@ -51,10 +55,13 @@ for(i in 1:nrow(pred_ints)) {
                              n_resamp = n_resamp)
 
   # Store method 3 results
-  pred_ints[sim == i, method_3_lb := method3_pred_int$lower_bound_2alpha]
-  pred_ints[sim == i, method_3_ub := method3_pred_int$upper_bound_2alpha]
+  pred_ints[sim == i, method_3_lb := method3_pred_int$lower_bound]
+  pred_ints[sim == i, method_3_ub := method3_pred_int$upper_bound]
 
 }
+
+pred_ints
+pred_ints
 
 # Min and max values for each bound
 summary(pred_ints$method_2_lb)

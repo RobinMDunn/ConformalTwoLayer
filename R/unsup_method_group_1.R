@@ -57,6 +57,7 @@ unsup_method_group_1 <- function(Y, alpha, Y_new = NULL){
 
   }
 
+  # Return prediction interval, interval size, and whether new Y is covered
   return(list(pred_int_size = pred_int_size,
               lower_bound = lower_bound,
               upper_bound = upper_bound,

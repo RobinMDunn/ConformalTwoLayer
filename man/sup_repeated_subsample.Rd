@@ -9,9 +9,11 @@ sup_repeated_subsample(
   model_formula,
   alpha,
   n_val,
-  k_val,
+  k_indices,
   n_resamp,
-  new_xy_data
+  grid_values,
+  new_xy_data,
+  coverage_only = FALSE
 )
 }
 \arguments{

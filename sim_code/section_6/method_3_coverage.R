@@ -16,19 +16,18 @@ suppressMessages(library(R.utils))
 library(devtools)
 load_all()
 
-# Read in arguments for start/end n_sim
+# Read in arguments for start/end n_sim and alpha (0.1, 0.15, 0.2)
 start_n_sim <- 1
 end_n_sim <- 1000
+alpha <- 0.1
 
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) > 0) {
   args <- as.numeric(args)
   start_n_sim <- args[1]
   end_n_sim <- args[2]
+  alpha <- args[3]
 }
-
-# Read in alpha level (0.10, 0.15, 0.20)
-alpha <- 0.10
 
 # Number of times to resample to get average p-value
 n_resamp <- 100
@@ -66,8 +65,7 @@ pb <- progress_bar$new(format = paste0("Sim :current / :total",
                        total = length(sim_vec), clear = T, show_after = 0)
 
 # Get coverage over 162 rows repeatedly. (Method has inherent randomness.)
-#for(sim_index in sim_vec) {
-for(sim_index in 1:5) {
+for(sim_index in sim_vec) {
 
   # Increment progress bar
   pb$tick()
@@ -86,6 +84,7 @@ for(sim_index in 1:5) {
     # n_val is number of observations for each individual (same across indivs)
     n_val <- nrow(sleep_df[Subject == 1])
 
+    # Get prediction interval results
     repeated_sub_results <-
       sup_repeated_subsample(xy_data = sleep_df[Subject != held_out_indiv],
                              model_formula = formula(Reaction ~ Days + Baseline - 1),
@@ -110,10 +109,7 @@ for(sim_index in 1:5) {
 
 }
 
-results
-results
-
-# # Save simulation results.
-# fwrite(results,
-#        file = paste0("data/example_sleep/coverage/method_3_sim_",
-#                      start_n_sim, "_", end_n_sim, ".csv"))
+# Save simulation results.
+fwrite(results, file = paste0("sim_data/section_6/method_3_coverage_point",
+                              as.integer(alpha*100), "_sim_", start_n_sim, "_",
+                              end_n_sim, ".csv"))

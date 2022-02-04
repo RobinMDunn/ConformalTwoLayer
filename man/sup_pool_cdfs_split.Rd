@@ -10,6 +10,7 @@ sup_pool_cdfs_split(
   alpha,
   k_val,
   k_model_fit,
+  k_resid_fit,
   new_xy_data
 )
 }

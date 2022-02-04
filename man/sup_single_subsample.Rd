@@ -4,7 +4,15 @@
 \alias{sup_single_subsample}
 \title{Title}
 \usage{
-sup_single_subsample(xy_data, model_formula, alpha, n_val, k_val, new_xy_data)
+sup_single_subsample(
+  xy_data,
+  model_formula,
+  alpha,
+  n_val,
+  k_indices,
+  grid_values,
+  new_xy_data
+)
 }
 \arguments{
 \item{Y_new}{}

@@ -92,5 +92,6 @@ for(sim_index in 1:n_sim) {
 
 }
 
-# # Save simulation results.
-# fwrite(results, file = "data/example_sleep/coverage/method_2.csv")
+# Save simulation results.
+fwrite(results, file = paste0("sim_data/section_6/method_2_coverage_point",
+                              as.integer(alpha*100), ".csv"))

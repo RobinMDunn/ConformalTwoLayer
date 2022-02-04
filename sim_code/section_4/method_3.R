@@ -7,6 +7,8 @@
 suppressMessages(library(R.utils))
 suppressMessages(library(progress))
 suppressMessages(library(data.table))
+library(devtools)
+load_all()
 
 # Read in arguments for start/end k (number of groups),
 # start/end n (number of observations per group),
@@ -70,9 +72,6 @@ for(row in 1:nrow(results)) {
   k_val <- results[row, k]
 
   n_val <- results[row, n]
-
-  # Set seed - depends on k and n
-  set.seed(k_val + n_val)
 
   # Keep coverage and length as NA unless k > 1/alpha - 1
   if(k_val > 1 / alpha - 1) {

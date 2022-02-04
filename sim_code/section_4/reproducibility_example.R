@@ -5,6 +5,8 @@ library(R.utils)
 library(data.table)
 library(tidyverse)
 library(progress)
+library(devtools)
+load_all()
 
 # Data frame to store results
 pred_ints <- data.table(sim = 1:1000,
@@ -38,8 +40,11 @@ for(i in 1:nrow(pred_ints)) {
   ###### Construct method 2 prediction interval #####
 
   # Construct prediction interval from xy_data
-  method2_pred_int <- sup_single_subsample(xy_data, alpha, n_val, k_val,
-                                           X_new = X_new)
+  method2_pred_int <-
+    sup_single_subsample(xy_data = xy_data,
+                         model_formula = formula(Y ~ X1 - 1),
+                         alpha = alpha, n_val = n_val, k_val = k_val,
+                         new_xy_data = data.frame(X1 = X_new))
 
   # Store method 2 results
   pred_ints[sim == i, method_2_lb := method2_pred_int$lower_bound]
@@ -51,14 +56,20 @@ for(i in 1:nrow(pred_ints)) {
   n_resamp <- 100
 
   method3_pred_int <-
-    sup_repeated_subsample(xy_data = xy_data, alpha = alpha, n_val = n_val,
-                           k_val = k_val, n_resamp = n_resamp, X_new = X_new)
+    sup_repeated_subsample(xy_data = xy_data,
+                           model_formula = formula(Y ~ X1 - 1),
+                           alpha = alpha, n_val = n_val, k_val = k_val,
+                           n_resamp = n_resamp,
+                           new_xy_data = data.frame(X1 = X_new))
 
   # Store method 3 results
   pred_ints[sim == i, method_3_lb := method3_pred_int$lower_bound]
   pred_ints[sim == i, method_3_ub := method3_pred_int$upper_bound]
 
 }
+
+pred_ints
+pred_ints
 
 # Min and max values for each bound
 summary(pred_ints$method_2_lb)
@@ -69,4 +80,4 @@ summary(pred_ints$method_3_ub)
 
 # Save results
 fwrite(pred_ints,
-       file = "data/supervised/method_2/method_2_3_bounds.csv")
+       file = "sim_data/section_4/reproducibility_example.csv")

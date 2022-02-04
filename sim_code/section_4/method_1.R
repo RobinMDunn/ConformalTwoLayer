@@ -7,6 +7,8 @@
 suppressMessages(library(R.utils))
 suppressMessages(library(progress))
 suppressMessages(library(data.table))
+library(devtools)
+load_all()
 
 # Read in arguments for start/end k (number of groups),
 # start/end n (number of observations per group),
@@ -111,10 +113,10 @@ for(row in 1:nrow(results)) {
 
 }
 
-# Save simulation results. Label with start/end k, n, mu, and tau_sq values.
-fwrite(results,
-       file = paste0("data/supervised/method_1/method_1_k_",
-                     start_k, "_", end_k,
-                     "_n_", start_n, "_", end_n,
-                     "_mu_", mu_val,
-                     "_tausq_", tau_sq_val, ".csv"))
+# # Save simulation results. Label with start/end k, n, mu, and tau_sq values.
+# fwrite(results,
+#        file = paste0("data/supervised/method_1/method_1_k_",
+#                      start_k, "_", end_k,
+#                      "_n_", start_n, "_", end_n,
+#                      "_mu_", mu_val,
+#                      "_tausq_", tau_sq_val, ".csv"))

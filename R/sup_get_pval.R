@@ -7,18 +7,18 @@
 #'
 #' @return
 #' @export
-#' @import formula.tools, tidyverse
 #'
 #' @examples
 sup_get_pval <- function(xy_sample, model_formula, X_new, Y_new) {
 
   # Rename Y_new to agree with LHS of model_formula
   xy_new <- cbind(X_new, Y_new)
-  colnames(xy_new)[colnames(xy_new) == "Y_new"] <- lhs.vars(model_formula)
+  colnames(xy_new)[colnames(xy_new) == "Y_new"] <- formula.tools::lhs.vars(model_formula)
 
   # Only save xy_sample columns needed for model_formula
-  xy_sample <- xy_sample %>% dplyr::select(lhs.vars(model_formula),
-                                           rhs.vars(model_formula))
+  xy_sample <- xy_sample %>%
+    dplyr::select(formula.tools::lhs.vars(model_formula),
+                  formula.tools::rhs.vars(model_formula))
 
   # Combine (X_new, Y_new) and xy_sample
   xy_aug <- rbind(xy_new, xy_sample)

@@ -54,8 +54,8 @@ unsup_repeated_subsample <- function(Y, alpha, k_val, n_resamp,
     lower_bound <-
       uniroot(f = function(x) unsup_get_avg_pvalue(Y_subsample_mat = Y_subsample_mat,
                                                    point = x) - (alpha - 0.0001),
-              lower = min(Y) - 1,
-              upper = min(Y),
+              lower = min(unlist(Y)) - 1,
+              upper = min(unlist(Y)),
               extendInt = "upX")$root
   } else {
     lower_bound <-
@@ -72,8 +72,8 @@ unsup_repeated_subsample <- function(Y, alpha, k_val, n_resamp,
     upper_bound <-
       uniroot(f = function(x) unsup_get_avg_pvalue(Y_subsample_mat = Y_subsample_mat,
                                                    point = x) - (alpha - 0.0001),
-              lower = max(Y),
-              upper = max(Y) + 1,
+              lower = max(unlist(Y)),
+              upper = max(unlist(Y)) + 1,
               extendInt = "downX")$root
   } else {
     upper_bound <-

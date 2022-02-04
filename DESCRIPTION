@@ -13,4 +13,5 @@ RoxygenNote: 7.1.2
 Imports: 
     data.table,
     dplyr,
-    formula.tools
+    formula.tools,
+    magrittr

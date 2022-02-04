@@ -3,32 +3,30 @@
 #' @param Y
 #' @param alpha
 #' @param n_val
-#' @param k_val
+#' @param k_indices
 #' @param X_new
 #' @param Y_new
 #'
 #' @return
 #' @export
-#'
-#' @examples
-sup_single_subsample <- function(xy_data, model_formula, alpha, n_val, k_val,
-                                 new_xy_data) {
+sup_single_subsample <- function(xy_data, model_formula, alpha, n_val, k_indices,
+                                 grid_values, new_xy_data) {
 
   # Sample one (X,Y) from each of the k groups.
-  index <- sample(1:n_val, size = k_val, replace = TRUE)
+  index_df <- data.frame(Subject = k_indices,
+                         index = sample(1:n_val, size = length(k_indices),
+                                        replace = TRUE))
 
   xy_sample <-
     do.call("rbind",
-            lapply(1:k_val,
-                   FUN = function(i) xy_data[xy_data$Subject == i, ][index[i], ]))
+            lapply(k_indices,
+                   FUN = function(i) xy_data[xy_data$Subject == i, ][index_df[index_df$Subject == i, ]$index, ]))
 
   # Extra new X data
   X_new <- dplyr::select(new_xy_data,
                          formula.tools::rhs.vars(model_formula))
 
   # Get p-values over a grid of Y_new values
-  grid_values <- seq(-10, 10, by = 1)
-
   grid_pval_vec <- rep(NA, length(grid_values))
 
   for(val in 1:length(grid_values)) {

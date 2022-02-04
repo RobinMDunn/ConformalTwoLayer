@@ -102,7 +102,8 @@ for(row in 1:nrow(results)) {
         sup_repeated_subsample(xy_data = xy_data,
                                model_formula = formula(Y ~ X1 - 1),
                                alpha = alpha, n_val = n_val,
-                               k_val = k_val, n_resamp = n_resamp,
+                               k_indices = 1:k_val, n_resamp = n_resamp,
+                               grid_values = seq(-10, 10, by = 1),
                                new_xy_data = new_xy_data)
 
       covered_2alpha[sim] <- sup_rep_sub_results$covered

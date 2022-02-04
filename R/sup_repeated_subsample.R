@@ -11,7 +11,8 @@
 #' @return
 #' @export
 sup_repeated_subsample <- function(xy_data, model_formula, alpha, n_val,
-                                   k_val, n_resamp, new_xy_data) {
+                                   k_indices, n_resamp, grid_values,
+                                   new_xy_data, coverage_only = FALSE) {
 
   # Create list to store repeatedly subsampled data frames
   xy_subsample_list <- vector("list", n_resamp)
@@ -25,51 +26,60 @@ sup_repeated_subsample <- function(xy_data, model_formula, alpha, n_val,
   for(resamp in 1:n_resamp) {
 
     # Sample one (X,Y) from each of the k groups.
-    index <- sample(1:n_val, size = k_val, replace = TRUE)
+    index_df <- data.frame(Subject = k_indices,
+                           index = sample(1:n_val, size = length(k_indices),
+                                          replace = TRUE))
 
     # Store subsampled data
     xy_subsample_list[[resamp]] <-
       do.call("rbind",
-              lapply(1:k_val,
-                     FUN = function(i) xy_data[xy_data$Subject == i, ][index[i], ]))
+              lapply(k_indices,
+                     FUN = function(i) xy_data[xy_data$Subject == i, ][index_df[index_df$Subject == i, ]$index, ]))
 
   }
 
-  # Get p-values over a grid of Y_new values
-  grid_values <- seq(-10, 10, by = 1)
+  # Construct prediction set
+  if(coverage_only == TRUE) {
 
-  grid_pval_vec <- rep(NA, length(grid_values))
+    lower_bound <- upper_bound <- pred_int_size <- NA
 
-  for(val in 1:length(grid_values)) {
-    grid_pval_vec[val] <- sup_get_avg_pval(xy_subsample_list = xy_subsample_list,
-                                           model_formula = model_formula,
-                                           X_new = X_new,
-                                           Y_new = grid_values[val])
+  } else {
+
+    # Get p-values over a grid of Y_new values
+    grid_pval_vec <- rep(NA, length(grid_values))
+
+    for(val in 1:length(grid_values)) {
+      grid_pval_vec[val] <- sup_get_avg_pval(xy_subsample_list = xy_subsample_list,
+                                             model_formula = model_formula,
+                                             X_new = X_new,
+                                             Y_new = grid_values[val])
+    }
+
+    # Use root solver to get bounds of conformal interval.
+    # Approx. minimum Y_new where pval >= alpha.
+    lower_bound <-
+      uniroot(f = function(x) sup_get_avg_pval(xy_subsample_list = xy_subsample_list,
+                                               model_formula = model_formula,
+                                               X_new = X_new,
+                                               Y_new = x) - (alpha - 0.0001),
+              lower = min(grid_values[grid_pval_vec > alpha]) - 1,
+              upper = min(grid_values[grid_pval_vec > alpha]),
+              extendInt = "upX")$root
+
+    # Approx. maximum Y_new where pval >= alpha.
+    upper_bound <-
+      uniroot(f = function(x) sup_get_avg_pval(xy_subsample_list = xy_subsample_list,
+                                               model_formula = model_formula,
+                                               X_new = X_new,
+                                               Y_new = x) - (alpha - 0.0001),
+              lower = max(grid_values[grid_pval_vec > alpha]),
+              upper = max(grid_values[grid_pval_vec > alpha]) + 1,
+              extendInt = "downX")$root
+
+    # Store prediction interval size
+    pred_int_size <- upper_bound - lower_bound
+
   }
-
-  # Use root solver to get bounds of conformal interval.
-  # Approx. minimum Y_new where pval >= alpha.
-  lower_bound <-
-    uniroot(f = function(x) sup_get_avg_pval(xy_subsample_list = xy_subsample_list,
-                                             model_formula = model_formula,
-                                             X_new = X_new,
-                                             Y_new = x) - (alpha - 0.0001),
-            lower = min(grid_values[grid_pval_vec > alpha]) - 1,
-            upper = min(grid_values[grid_pval_vec > alpha]),
-            extendInt = "upX")$root
-
-  # Approx. maximum Y_new where pval >= alpha.
-  upper_bound <-
-    uniroot(f = function(x) sup_get_avg_pval(xy_subsample_list = xy_subsample_list,
-                                             model_formula = model_formula,
-                                             X_new = X_new,
-                                             Y_new = x) - (alpha - 0.0001),
-            lower = max(grid_values[grid_pval_vec > alpha]),
-            upper = max(grid_values[grid_pval_vec > alpha]) + 1,
-            extendInt = "downX")$root
-
-  # Store prediction interval size
-  pred_int_size <- upper_bound - lower_bound
 
   # If we observe Y_new, check whether (X_new, Y_new) is inside interval
   Y_new_observed <- as.character(formula.tools::lhs(model_formula)) %in%

@@ -91,12 +91,16 @@ for(row in 1:nrow(results)) {
       new_xy_data <- sup_generate_data(k = 1, n = 1, mu = mu_val,
                                        tau_sq = tau_sq_val, sigma_sq = 1)
 
+      new_xy_data$Subject <- k_val + 1
+
       # Get prediction interval size and whether new (X, Y) is covered
       sup_single_sub_results <-
         sup_single_subsample(xy_data = xy_data,
                              model_formula = formula(Y ~ X1 - 1),
                              alpha = alpha, n_val = n_val,
-                             k_val = k_val, new_xy_data = new_xy_data)
+                             k_indices = 1:k_val,
+                             grid_values = seq(-10, 10, by = 1),
+                             new_xy_data = new_xy_data)
 
       covered[sim] <- sup_single_sub_results$covered
 

@@ -11,7 +11,7 @@
 #'
 #' @examples
 sup_pool_cdfs_split <- function(xy_data, model_formula, alpha, k_val,
-                                k_model_fit, new_xy_data) {
+                                k_model_fit, k_resid_fit, new_xy_data) {
 
   # If k >= 2, fit model using observations in k_model_fit groups.
   # If k = 1, fit model without using any observed data. (Generate random data.)
@@ -29,7 +29,6 @@ sup_pool_cdfs_split <- function(xy_data, model_formula, alpha, k_val,
   }
 
   # Get residuals on remaining groups
-  k_resid_fit <- setdiff(1:k_val, k_model_fit)
   xy_resid_fit <- xy_data[xy_data$Subject %in% k_resid_fit, ]
 
   resid_fit <-

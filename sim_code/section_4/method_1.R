@@ -87,6 +87,9 @@ for(row in 1:nrow(results)) {
     # Fit model on pooled data from half of the groups
     k_model_fit <- sample(x = k_val, size = floor(k_val/2), replace = FALSE)
 
+    # Fit residuals on remaining groups
+    k_resid_fit <- setdiff(1:k_val, k_model_fit)
+
     # Generate new X and Y observation
     new_xy_data <- sup_generate_data(k = 1, n = 1, mu = mu_val,
                                      tau_sq = tau_sq_val, sigma_sq = 1)
@@ -96,7 +99,9 @@ for(row in 1:nrow(results)) {
       sup_pool_cdfs_split(xy_data = xy_data,
                           model_formula = formula(Y ~ X1 - 1),
                           alpha = alpha,
-                          k_val = k_val, k_model_fit = k_model_fit,
+                          k_val = k_val,
+                          k_model_fit = k_model_fit,
+                          k_resid_fit = k_resid_fit,
                           new_xy_data = new_xy_data)
 
     covered[sim] <- sup_pool_cdf_results$covered

@@ -108,8 +108,8 @@ for(row in 1:nrow(results)) {
 
 }
 
-# # Save simulation results.
-#
-# fwrite(results, file = paste0("data/unsup_unbalanced/method_1_small_",
-#                               n_small, "_large_", n_large, "_",
-#                               start_k, "_", end_k, ".csv"))
+# Save simulation results. Label with n_small, n_large, k values.
+fwrite(results,
+       file = paste0("sim_data/section_3/unbalanced/method_1_small_",
+                     n_small, "_large_", n_large, "_",
+                     start_k, "_", end_k, ".csv"))

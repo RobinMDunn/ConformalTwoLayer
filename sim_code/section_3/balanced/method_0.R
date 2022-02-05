@@ -31,24 +31,20 @@ library(devtools)
 load_all()
 
 # Read in arguments for start/end k (number of groups),
-# start/end n (number of observations per group),
-# and start/end tau^2 (variance of random effects distribution).
+# n (number of observations per group),
+# and tau^2 (variance of random effects distribution).
 start_k <- 5
 end_k <- 1000
-start_n <- 5
-end_n <- 1000
-start_tau_sq <- 1
-end_tau_sq <- 1
+n <- 100
+tau_sq <- 1
 
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) > 0) {
   args <- as.numeric(args)
   start_k <- args[1]
   end_k <- args[2]
-  start_n <- args[3]
-  end_n <- args[4]
-  start_tau_sq <- args[5]
-  end_tau_sq <- args[6]
+  n <- args[3]
+  tau_sq <- args[4]
 }
 
 # Set alpha level
@@ -59,21 +55,12 @@ all_k <- c(seq(5, 100, by = 5), seq(200, 1000, by = 100))
 
 k_vec <- all_k[start_k <= all_k & all_k <= end_k]
 
-all_n <- c(40, 100, 1000)
-
-n_vec <- all_n[start_n <= all_n & all_n <= end_n]
-
-all_tau_sq <- 1
-
-tau_sq_vec <- all_tau_sq[start_tau_sq <= all_tau_sq &
-                           all_tau_sq <= end_tau_sq]
-
 # Construct data frame to store results
-results <- data.table(expand.grid(k_vec, n_vec, tau_sq_vec),
+results <- data.table(k = k_vec,
+                      n = n,
+                      tau_sq = tau_sq,
                       coverage = NA_real_,
                       avg_length = NA_real_)
-
-setnames(results, old = c("Var1", "Var2", "Var3"), new = c("k", "n", "tau_sq"))
 
 # Number of simulations to perform at each combination of k, n, and tau_sq
 n_sim <- 1000
@@ -139,10 +126,7 @@ for(row in 1:nrow(results)) {
 
 }
 
-# Save simulation results. Label with start/end k and tau_sq values.
-# fwrite(results,
-#        file = paste0("data/unsupervised/method_0/method_0_k_",
-#                      start_k, "_", end_k,
-#                      "_n_", start_n, "_", end_n,
-#                      "_tausq_", start_tau_sq_text, "_",
-#                      end_tau_sq_text, ".csv"))
+# Save simulation results. Label with start k, n, tau_sq values.
+fwrite(results, file =  paste0("sim_data/section_3/balanced/method_0_k_",
+                               start_k, "_n_", n,
+                               "_tausq_", tau_sq, ".csv"))

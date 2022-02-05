@@ -23,8 +23,8 @@ unsup_pool_cdfs <- function(Y, alpha, new_Y = NULL) {
   if(min(which(grid_pval_vec > alpha/2)) == 1) {
     lower_bound <-
       uniroot(f = function(x) unsup_avg_ecdf(Y = Y, threshold = x) - (alpha/2 - 0.0001),
-              lower = min(Y) - 1,
-              upper = min(Y),
+              lower = min(unlist(Y)) - 1,
+              upper = min(unlist(Y)),
               extendInt = "upX")$root
   } else {
     lower_bound <-
@@ -39,8 +39,8 @@ unsup_pool_cdfs <- function(Y, alpha, new_Y = NULL) {
   if(min(which(grid_pval_vec > (1 - alpha/2))) == 1) {
     upper_bound <-
       uniroot(f = function(x) unsup_avg_ecdf(Y = Y, threshold = x) - (1 - alpha/2 - 0.0001),
-              lower = min(Y) - 1,
-              upper = min(Y),
+              lower = min(unlist(Y)) - 1,
+              upper = min(unlist(Y)),
               extendInt = "upX")$root
   } else {
     upper_bound <-

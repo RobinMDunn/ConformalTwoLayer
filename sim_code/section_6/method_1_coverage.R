@@ -14,7 +14,6 @@ library(devtools)
 load_all()
 
 # Read in alpha level (0.10, 0.15, 0.20)
-alpha_vec <- c(0.10, 0.15, 0.20)
 alpha_start <- 0.1
 alpha_end <- 0.2
 
@@ -24,6 +23,9 @@ if (length(args) > 0) {
   alpha_start <- args[1]
   alpha_end <- args[2]
 }
+
+# Vector of possible alpha values
+alpha_vec <- c(0.10, 0.15, 0.20)
 
 # Set number of simulations
 n_sim <- 1000

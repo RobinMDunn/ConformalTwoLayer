@@ -12,11 +12,12 @@ load_all()
 
 # Read in arguments for start/end k (number of groups),
 # start/end n (number of observations per group),
-# and start/end tau^2 (variance of random effects distribution).
+# and start/end sigma^2 (variance of individual distributions).
 start_k <- 5
 end_k <- 1000
 n_j_val <- 20
-sigma_sq_val <- 1
+sigma_sq_start <- 1
+sigma_sq_end <- 100
 
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) > 0) {
@@ -24,7 +25,8 @@ if (length(args) > 0) {
   start_k <- args[1]
   end_k <- args[2]
   n_j_val <- args[3]
-  sigma_sq_val <- args[4]
+  sigma_sq_start <- args[4]
+  sigma_sq_end <- args[5]
 }
 
 # Set alpha level
@@ -34,15 +36,21 @@ alpha <- 0.1
 ##### Data set-up #####
 #######################
 
+# Vector of possible sigma_sq params
+sigma_sq_vec <- c(1, 100)
+
 # Vary k in increments of 5
 k_vec <- seq(start_k, end_k, by = 5)
 
 # Construct data frame to store results
-results <- data.table(k = k_vec,
-                      n_j = n_j_val,
-                      sigma_sq = sigma_sq_val,
-                      coverage = NA_real_,
-                      avg_length = NA_real_)
+results <- data.table(
+  expand.grid(k = k_vec,
+              sigma_sq = sigma_sq_vec[sigma_sq_vec >= sigma_sq_start &
+                                        sigma_sq_vec <= sigma_sq_end]),
+  n_j = n_j_val,
+  coverage = NA_real_,
+  avg_length = NA_real_) %>%
+  dplyr::select(k, n_j, sigma_sq, coverage, avg_length)
 
 # Number of simulations to perform at each combination of k, n, and sigma_sq
 n_sim <- 1000
@@ -111,11 +119,6 @@ for(row in 1:nrow(results)){
 
 # Save simulation results. Label with start/end k and sigma_sq values.
 
-fwrite(results, file = paste0("sim_data/unsup_group_1/method_2/method_2_sigmasq_",
-                              sigma_sq_val, "_k_", start_k, ".csv"))
-
-# fwrite(results,
-#        file = paste0("data/shrinkage/method_2/method_2_k_",
-#                      start_k, "_", end_k,
-#                      "_n_", n_j_val,
-#                      "_sigmasq_", sigma_sq_val, ".csv"))
+fwrite(results, file = paste0("sim_data/section_5/method_2_k_", start_k,
+                              "_n_", n_j_val, "_sigmasq_", sigma_sq_start,
+                              ".csv"))

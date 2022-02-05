@@ -11,12 +11,11 @@ library(devtools)
 load_all()
 
 # Read in arguments for start/end k (number of groups),
-# start/end n (number of observations per group),
+# n (number of observations per group),
 # mu and tau^2 (mean and variance of theta params).
 start_k <- 20
 end_k <- 1000
-start_n <- 20
-end_n <- 1000
+n_val <- 100
 mu_val <- 0
 tau_sq_val <- 1
 
@@ -25,10 +24,9 @@ if (length(args) > 0) {
   args <- as.numeric(args)
   start_k <- args[1]
   end_k <- args[2]
-  start_n <- args[3]
-  end_n <- args[4]
-  mu_val <- args[5]
-  tau_sq_val <- args[6]
+  n_val <- args[3]
+  mu_val <- args[4]
+  tau_sq_val <- args[5]
 }
 
 # Set alpha level
@@ -39,18 +37,13 @@ all_k <- c(seq(5, 100, by = 5), seq(200, 1000, by = 100))
 
 k_vec <- all_k[start_k <= all_k & all_k <= end_k]
 
-all_n <- c(seq(5, 100, by = 5), seq(200, 1000, by = 100))
-
-n_vec <- all_n[start_n <= all_n & all_n <= end_n]
-
 # Construct data frame to store results
-results <- data.table(expand.grid(k_vec, n_vec),
+results <- data.table(k = k_vec,
+                      n = n_val,
                       mu = mu_val,
                       tau_sq = tau_sq_val,
                       coverage_2alpha = NA_real_,
                       avg_size_2alpha = NA_real_)
-
-setnames(results, old = c("Var1", "Var2"), new = c("k", "n"))
 
 # Number of simulations to perform at each combination of k and n
 n_sim <- 1000
@@ -122,10 +115,8 @@ for(row in 1:nrow(results)) {
 
 }
 
-# Save simulation results. Label with start/end k, n, mu, and tau_sq values.
+# Save simulation results. Label with k, n, mu, and tau_sq values.
 fwrite(results,
-       file = paste0("data/supervised/method_3/method_3_k_",
-                     start_k, "_", end_k,
-                     "_n_", start_n, "_", end_n,
-                     "_mu_", mu_val,
+       file = paste0("sim_data/section_4/method_3_k_",
+                     start_k, "_n_", n_val, "_mu_", mu_val,
                      "_tausq_", tau_sq_val, ".csv"))

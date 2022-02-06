@@ -42,7 +42,9 @@ for(i in 1:nrow(pred_ints)) {
   method2_pred_int <-
     sup_single_subsample(xy_data = xy_data,
                          model_formula = formula(Y ~ X1 - 1),
-                         alpha = alpha, n_val = n_val, k_val = k_val,
+                         alpha = alpha, n_val = n_val, k_indices = 1:k_val,
+                         grid_values = quantile(xy_data$Y,
+                                                probs = seq(0, 1, by = 0.02)),
                          new_xy_data = data.frame(X1 = X_new))
 
   # Store method 2 results
@@ -57,8 +59,10 @@ for(i in 1:nrow(pred_ints)) {
   method3_pred_int <-
     sup_repeated_subsample(xy_data = xy_data,
                            model_formula = formula(Y ~ X1 - 1),
-                           alpha = alpha, n_val = n_val, k_val = k_val,
+                           alpha = alpha, n_val = n_val, k_indices = 1:k_val,
                            n_resamp = n_resamp,
+                           grid_values = quantile(xy_data$Y,
+                                                  probs = seq(0, 1, by = 0.02)),
                            new_xy_data = data.frame(X1 = X_new))
 
   # Store method 3 results
@@ -66,9 +70,6 @@ for(i in 1:nrow(pred_ints)) {
   pred_ints[sim == i, method_3_ub := method3_pred_int$upper_bound]
 
 }
-
-pred_ints
-pred_ints
 
 # Min and max values for each bound
 summary(pred_ints$method_2_lb)

@@ -13,18 +13,13 @@ library(lme4)
 library(ConformalTwoLayer)
 
 # Read in alpha level (0.10, 0.15, 0.20)
-alpha_start <- 0.1
-alpha_end <- 0.2
+alpha <- 0.1
 
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) > 0) {
   args <- as.numeric(args)
-  alpha_start <- args[1]
-  alpha_end <- args[2]
+  alpha <- args[1]
 }
-
-# Vector of possible alpha values
-alpha_vec <- c(0.10, 0.15, 0.20)
 
 # Set number of simulations
 n_sim <- 1000
@@ -33,7 +28,7 @@ n_sim <- 1000
 data(sleepstudy)
 
 sleep_df <- sleepstudy %>%
-  mutate(Subject = as.numeric(Subject)) %>%
+  dplyr::mutate(Subject = as.numeric(Subject)) %>%
   as.data.table(key = "Subject")
 
 # Add baseline (day 0) reaction time column
@@ -48,9 +43,8 @@ n_rows <- nrow(sleep_df) # 162
 coverage_vec <- rep(NA, n_rows)
 
 # Construct data frame to store results
-results <- data.table(expand.grid(sim = 1:n_sim,
-                                  alpha = alpha_vec[alpha_vec >= alpha_start &
-                                                      alpha_vec <= alpha_end]),
+results <- data.table(sim = 1:n_sim,
+                      alpha = alpha,
                       n_rows = n_rows,
                       coverage = NA_real_)
 
@@ -60,8 +54,7 @@ pb <- progress_bar$new(format = paste0("Sim :current / :total",
                        total = n_sim, clear = T, show_after = 0)
 
 # Get coverage over 162 rows repeatedly. (Method has inherent randomness.)
-#for(sim_index in 1:n_sim) {
-for(sim_index in 1:10) {
+for(sim_index in 1:n_sim) {
 
   # Increment progress bar
   pb$tick()
@@ -108,4 +101,4 @@ for(sim_index in 1:10) {
 
 # Save simulation results.
 fwrite(results, file = paste0("sim_data/section_6/method_1_coverage_point",
-                              as.integer(alpha_start*100), ".csv"))
+                              as.integer(alpha*100), ".csv"))

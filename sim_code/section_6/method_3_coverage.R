@@ -17,20 +17,15 @@ library(ConformalTwoLayer)
 # Read in arguments for start/end n_sim and alpha (0.1, 0.15, 0.2)
 start_n_sim <- 1
 end_n_sim <- 1000
-alpha_start <- 0.1
-alpha_end <- 0.2
+alpha <- 0.1
 
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) > 0) {
   args <- as.numeric(args)
   start_n_sim <- args[1]
   end_n_sim <- args[2]
-  alpha_start <- args[3]
-  alpha_end <- args[4]
+  alpha <- args[3]
 }
-
-# Vector of possible alpha values
-alpha_vec <- c(0.10, 0.15, 0.20)
 
 # Number of times to resample to get average p-value
 n_resamp <- 100
@@ -42,7 +37,7 @@ sim_vec <- start_n_sim:end_n_sim
 data(sleepstudy)
 
 sleep_df <- sleepstudy %>%
-  mutate(Subject = as.numeric(Subject)) %>%
+  dplyr::mutate(Subject = as.numeric(Subject)) %>%
   as.data.table(key = "Subject")
 
 # Add baseline (day 0) reaction time column
@@ -57,9 +52,8 @@ n_rows <- nrow(sleep_df) # 162
 coverage_vec_2alpha <- rep(NA, n_rows)
 
 # Construct data frame to store results
-results <- data.table(expand.grid(sim = sim_vec,
-                                  alpha = alpha_vec[alpha_vec >= alpha_start &
-                                                      alpha_vec <= alpha_end]),
+results <- data.table(sim = sim_vec,
+                      alpha = alpha,
                       n_rows = n_rows,
                       coverage = NA_real_)
 
@@ -115,5 +109,5 @@ for(sim_index in sim_vec) {
 
 # Save simulation results.
 fwrite(results, file = paste0("sim_data/section_6/method_3_coverage_point",
-                              as.integer(alpha_start*100), "_sim_",
+                              as.integer(alpha*100), "_sim_",
                               start_n_sim, "_", end_n_sim, ".csv"))

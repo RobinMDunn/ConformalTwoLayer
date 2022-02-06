@@ -1,12 +1,9 @@
-Package: ConformalRandomEffects
-Title: What the Package Does (One Line, Title Case)
+Package: ConformalTwoLayer
+Title: Distribution-Free Prediction Sets for Two-Layer Hierarchical Data
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Author: Robin Dunn <robin.dunn@novartis.com> 
+Description: Constructs distribution-free prediction sets based on the methods in "Distribution-Free Prediction Sets with Two-Layer Hierarchical Models." We assume we have multiple observations in multiple subjects, in a hierarchical model setting. The methods address the following goals: unsupervised prediction of a new observation on a new subject, supervised prediction of a new observation on a new subject, and unsupervised prediction of a new observation on an existing subject. 
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
@@ -14,4 +11,11 @@ Imports:
     data.table,
     dplyr,
     formula.tools,
-    magrittr
+    grid,
+    gridExtra,
+    lme4,
+    magrittr,
+    progress,
+    R.utils
+Depends: 
+    tidyverse

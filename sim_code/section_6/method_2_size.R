@@ -14,7 +14,7 @@ alpha <- 0.10
 data(sleepstudy)
 
 sleep_df <- sleepstudy %>%
-  mutate(Subject = as.numeric(Subject)) %>%
+  dplyr::mutate(Subject = as.numeric(Subject)) %>%
   as.data.table(key = "Subject")
 
 # Add baseline (day 0) reaction time column

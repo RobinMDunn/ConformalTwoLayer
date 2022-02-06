@@ -18,17 +18,17 @@ paper_theme <- theme_bw() +
 
 # Read in data
 method_0 <- fread(file = "sim_data/appendix/unsup_exp_exp/method_0.csv") %>%
-  mutate(Method = "0. Double Conformal")
+  dplyr::mutate(Method = "0. Double Conformal")
 
 method_1 <- fread(file = "sim_data/appendix/unsup_exp_exp/method_1.csv") %>%
-  mutate(Method = "1. Pool CDFs")
+  dplyr::mutate(Method = "1. Pool CDFs")
 
 method_2 <- fread(file = "sim_data/appendix/unsup_exp_exp/method_2.csv") %>%
-  mutate(Method = "2. Subsample Once")
+  dplyr::mutate(Method = "2. Subsample Once")
 
 method_3 <- fread(file = "sim_data/appendix/unsup_exp_exp/method_3.csv") %>%
-  rename(coverage = coverage_2alpha, avg_length = avg_length_2alpha) %>%
-  mutate(Method = "3. Repeated Subsample")
+  dplyr::rename(coverage = coverage_2alpha, avg_length = avg_length_2alpha) %>%
+  dplyr::mutate(Method = "3. Repeated Subsample")
 
 # Merge results across methods
 results <- rbind(method_0, method_1, method_2, method_3)
@@ -40,7 +40,7 @@ results <- rbind(method_0, method_1, method_2, method_3)
 # Coverage vs k, smaller values of k
 cov_small_k <- results %>%
   dplyr::filter(k <= 100, n == 100, !is.na(coverage)) %>%
-  mutate(Method = factor(
+  dplyr::mutate(Method = factor(
     Method,
     levels = c("0. Double Conformal",
                "1. Pool CDFs",
@@ -69,7 +69,7 @@ cov_small_k <- results %>%
 # Size vs k, smaller values of k
 size_small_k <- results %>%
   dplyr::filter(k <= 100, n == 100, !is.na(coverage)) %>%
-  mutate(Method = factor(
+  dplyr::mutate(Method = factor(
     Method,
     levels = c("0. Double Conformal",
                "1. Pool CDFs",

@@ -16,10 +16,10 @@ paper_theme <- theme_bw() +
 
 # Read in data
 method_1 <- fread(file = "sim_data/section_5/method_1.csv") %>%
-  mutate(Method = "1. Group 1 Only")
+  dplyr::mutate(Method = "1. Group 1 Only")
 
 method_2 <- fread(file = "sim_data/section_5/method_2.csv") %>%
-  mutate(Method = "2. Shrinkage")
+  dplyr::mutate(Method = "2. Shrinkage")
 
 # Merge results across methods
 results <- rbind(method_1, method_2)
@@ -29,7 +29,7 @@ results <- rbind(method_1, method_2)
 ########################
 
 size_resid <- results %>%
-  mutate(sigma_sq = factor(sigma_sq, levels = c(1, 100),
+  dplyr::mutate(sigma_sq = factor(sigma_sq, levels = c(1, 100),
                            labels = c("sigma^2==1", "sigma^2==100"))) %>%
   ggplot(aes(x = k, y = avg_length, col = Method)) +
   facet_wrap(. ~ sigma_sq, scale = "free_y", labeller = label_parsed) +

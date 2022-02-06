@@ -18,17 +18,17 @@ paper_theme <- theme_bw() +
 
 # Read in data
 method_1 <- fread(file = "sim_data/section_6/method_1_size.csv") %>%
-  mutate(Method = "1. Pool CDFs")
+  dplyr::mutate(Method = "1. Pool CDFs")
 
 method_2 <- fread(file = "sim_data/section_6/method_2_size.csv") %>%
-  mutate(Method = "2. Subsample Once")
+  dplyr::mutate(Method = "2. Subsample Once")
 
 method_3 <- fread(file = "sim_data/section_6/method_3_size.csv") %>%
-  mutate(Method = "3. Repeated Subsample")
+  dplyr::mutate(Method = "3. Repeated Subsample")
 
 # Merge results across methods
 results <- rbind(method_1, method_2, method_3) %>%
-  mutate(
+  dplyr::mutate(
     Method = factor(Method,
                     levels = c("1. Pool CDFs",
                                "2. Subsample Once",
@@ -48,7 +48,7 @@ results <- rbind(method_1, method_2, method_3) %>%
 # Plot conformal intervals for a subset of day 0 reaction times
 pred_int_plot <- results %>%
   dplyr::filter(Baseline %in% seq(200, 320, by = 30)) %>%
-  mutate(Baseline = factor(Baseline)) %>%
+  dplyr::mutate(Baseline = factor(Baseline)) %>%
   ggplot() +
   facet_grid(Days ~ .) +
   geom_linerange(aes(x = Baseline,

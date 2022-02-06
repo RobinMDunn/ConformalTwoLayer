@@ -18,14 +18,14 @@ paper_theme <- theme_bw() +
 
 # Read in data
 method_1 <- fread(file = "sim_data/section_4/method_1.csv") %>%
-  mutate(Method = "1. Pool CDFs")
+  dplyr::mutate(Method = "1. Pool CDFs")
 
 method_2 <- fread(file = "sim_data/section_4/method_2.csv") %>%
-  mutate(Method = "2. Subsample Once")
+  dplyr::mutate(Method = "2. Subsample Once")
 
 method_3 <- fread(file = "sim_data/section_4/method_3.csv") %>%
-  rename(coverage = coverage_2alpha, avg_size = avg_size_2alpha) %>%
-  mutate(Method = "3. Repeated Subsample")
+  dplyr::rename(coverage = coverage_2alpha, avg_size = avg_size_2alpha) %>%
+  dplyr::mutate(Method = "3. Repeated Subsample")
 
 # Merge results across methods
 results <- rbind(method_1, method_2, method_3, fill = TRUE)
@@ -46,7 +46,7 @@ get_legend<-function(myggplot){
 
 # Coverage vs k, smaller values of k
 single_cov_small_k <- results %>%
-  filter(mu == 0, tau_sq == 1, n == 100, k <= 100) %>%
+  dplyr::filter(mu == 0, tau_sq == 1, n == 100, k <= 100) %>%
   ggplot(aes(x = k, y = coverage, color = Method)) +
   geom_point(alpha = 0.5) +
   geom_line() +
@@ -61,7 +61,7 @@ single_cov_small_k <- results %>%
 
 # Coverage vs k, larger values of k
 single_cov_large_k <- results %>%
-  filter(mu == 0, tau_sq == 1, n == 100, k >= 200) %>%
+  dplyr::filter(mu == 0, tau_sq == 1, n == 100, k >= 200) %>%
   ggplot(aes(x = k, y = coverage, color = Method)) +
   geom_point(alpha = 0.5) +
   geom_line() +
@@ -88,7 +88,7 @@ cov_n100 <-
 
 # Size vs k, smaller values of k
 single_size_small_k <- results %>%
-  filter(mu == 0, tau_sq == 1, n == 100, k <= 100) %>%
+  dplyr::filter(mu == 0, tau_sq == 1, n == 100, k <= 100) %>%
   ggplot(aes(x = k, y = avg_size, color = Method)) +
   geom_point(alpha = 0.5) +
   geom_line() +
@@ -101,7 +101,7 @@ single_size_small_k <- results %>%
 
 # Size vs k, larger values of k
 single_size_large_k <- results %>%
-  filter(mu == 0, tau_sq == 1, n == 100, k >= 200) %>%
+  dplyr::filter(mu == 0, tau_sq == 1, n == 100, k >= 200) %>%
   ggplot(aes(x = k, y = avg_size, color = Method)) +
   geom_point(alpha = 0.5) +
   geom_line() +

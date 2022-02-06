@@ -19,14 +19,14 @@ paper_theme <- theme_bw() +
 
 # Read in data
 method_1 <- fread(file = "sim_data/appendix/sup_addl/method_1.csv") %>%
-  mutate(Method = "1. Pool CDFs")
+  dplyr::mutate(Method = "1. Pool CDFs")
 
 method_2 <- fread(file = "sim_data/appendix/sup_addl/method_2.csv") %>%
-  mutate(Method = "2. Subsample Once")
+  dplyr::mutate(Method = "2. Subsample Once")
 
 method_3 <- fread(file = "sim_data/appendix/sup_addl/method_3.csv") %>%
-  rename(coverage = coverage_2alpha, avg_size = avg_size_2alpha) %>%
-  mutate(Method = "3. Repeated Subsample")
+  dplyr::rename(coverage = coverage_2alpha, avg_size = avg_size_2alpha) %>%
+  dplyr::mutate(Method = "3. Repeated Subsample")
 
 # Merge results across methods
 results <- rbind(method_1, method_2, method_3, fill = TRUE)
@@ -48,7 +48,7 @@ get_legend<-function(myggplot){
 # Size vs k, smaller values of k
 size_small_k <- results %>%
   dplyr::filter(k <= 100, n %in% c(20, 100, 1000)) %>%
-  mutate(Method = factor(
+  dplyr::mutate(Method = factor(
     Method,
     levels = c("1. Pool CDFs",
                "2. Subsample Once",
@@ -56,7 +56,7 @@ size_small_k <- results %>%
     labels = c("1. Pool CDFs",
                "2. Subsample Once",
                "3. Repeated Subsample"))) %>%
-  mutate(n = factor(n, levels = c(20, 100, 1000),
+  dplyr::mutate(n = factor(n, levels = c(20, 100, 1000),
                     labels = c("n[j]==20~obs~per~group",
                                "n[j]==100~obs~per~group",
                                "n[j]==1000~obs~per~group")),
@@ -80,7 +80,7 @@ size_small_k <- results %>%
 # Size vs k, larger values of k
 size_large_k <- results %>%
   dplyr::filter(k >= 200, n %in% c(20, 100, 1000)) %>%
-  mutate(Method = factor(
+  dplyr::mutate(Method = factor(
     Method,
     levels = c("1. Pool CDFs",
                "2. Subsample Once",
@@ -88,7 +88,7 @@ size_large_k <- results %>%
     labels = c("1. Pool CDFs",
                "2. Subsample Once",
                "3. Repeated Subsample"))) %>%
-  mutate(n = factor(n, levels = c(20, 100, 1000),
+  dplyr::mutate(n = factor(n, levels = c(20, 100, 1000),
                     labels = c("n[j]==20~obs~per~group",
                                "n[j]==100~obs~per~group",
                                "n[j]==1000~obs~per~group")),

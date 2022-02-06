@@ -19,17 +19,17 @@ paper_theme <- theme_bw() +
 # Read in data
 
 method_1 <- fread(file = "sim_data/section_3/unbalanced/method_1.csv") %>%
-  mutate(Method = "1. Pool CDFs")
+  dplyr::mutate(Method = "1. Pool CDFs")
 
 method_2 <- fread(file = "sim_data/section_3/unbalanced/method_2.csv") %>%
-  mutate(Method = "2. Subsample Once")
+  dplyr::mutate(Method = "2. Subsample Once")
 
 method_3 <- fread(file = "sim_data/section_3/unbalanced/method_3.csv") %>%
-  mutate(Method = "3. Repeated Subsample")
+  dplyr::mutate(Method = "3. Repeated Subsample")
 
 # Merge results across methods
 results <- rbind(method_1, method_2, method_3) %>%
-  mutate(Method = factor(Method,
+  dplyr::mutate(Method = factor(Method,
                          levels = c("1. Pool CDFs",
                                     "2. Subsample Once",
                                     "3. Repeated Subsample"),

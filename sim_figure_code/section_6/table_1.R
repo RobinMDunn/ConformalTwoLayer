@@ -5,13 +5,13 @@ library(data.table)
 
 # Read in data
 method_1 <- fread(file = "sim_data/section_6/method_1_coverage.csv") %>%
-  mutate(Method = "CDF Pooling")
+  dplyr::mutate(Method = "CDF Pooling")
 
 method_2 <- fread(file = "sim_data/section_6/method_2_coverage.csv") %>%
-  mutate(Method = "Subsample Once")
+  dplyr::mutate(Method = "Subsample Once")
 
 method_3 <- fread(file = "sim_data/section_6/method_3_coverage.csv") %>%
-  mutate(Method = "Subsample Avg")
+  dplyr::mutate(Method = "Subsample Avg")
 
 ##############################
 ##### Coverage estimates #####

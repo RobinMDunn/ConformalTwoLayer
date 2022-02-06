@@ -6,23 +6,14 @@
 #    Y_ji = theta_j + epsilon_ji (i = 1, ..., n)
 #    theta_j ~ N(0, tau^2)
 #    epsilon_ji ~ N(0, 1)
-# Vary tau^2 = {0.1, 1, 10}
+# Let tau^2 = 1
 # Vary k from 5 to 100 in increments of 5, and 200 to 1000 in increments of 100.
-# Vary n from 5 to 100 in increments of 5, and 200 to 1000 in increments of 100.
-#
-# PREDICTION INTERVAL:
-# Compute empirical CDF for each group.
-# Get lower and upper alpha/2 bounds from averaging empirical CDFs.
-#
-# RUNNING:
-# When running from shell, you can optionally enter six arguments:
-# start k, end k, start n, end n, start tau^2, and end tau^2.
+# Let n = 100
 
-suppressMessages(library(R.utils))
-suppressMessages(library(progress))
-suppressMessages(library(data.table))
-library(devtools)
-load_all()
+library(R.utils)
+library(progress)
+library(data.table)
+library(ConformalTwoLayer)
 
 # Read in arguments for start/end k (number of groups),
 # n (number of observations per group),

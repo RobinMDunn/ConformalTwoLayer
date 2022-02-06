@@ -6,29 +6,14 @@
 #    Y_ji = theta_j + epsilon_ji (i = 1, ..., n)
 #    theta_j ~ N(0, tau^2)
 #    epsilon_ji ~ N(0, 1)
-# Vary tau^2 = {0.1, 1, 10}
+# Let tau^2 = 1
 # Vary k from 5 to 100 in increments of 5, and 200 to 1000 in increments of 100.
-# Vary n from 5 to 100 in increments of 5, and 200 to 1000 in increments of 100.
-#
-# PREDICTION INTERVAL:
-# 1. Apply order statistic method to each of the k groups to get k intervals
-# [l_1, u_1], ..., [l_k, u_k] each at level 1-alpha/2.
-# l_1 is the floor((n + 1) * alpha/4) order statistic of the first sample,
-# u_1 is the ceiling((n + 1)*(1 - alpha/4)) order statistic of the first sample,
-# and so on for the other samples.
-# 2. Consider (l_1, ..., l_k). Take l_(r), where r = floor((k + 1) * alpha/4).
-# Consider (u_1, ..., u_k). Take u_(s), where s = ceiling((k + 1)*(1 - alpha/4)).
-# Prediction interval: C = [l_(r), u_(s)].
-#
-# RUNNING:
-# When running from shell, you can optionally enter six arguments:
-# start k, end k, start n, end n, start tau^2, and end tau^2.
+# Let n = 40, 100, 1000.
 
-suppressMessages(library(R.utils))
-suppressMessages(library(progress))
-suppressMessages(library(data.table))
-library(devtools)
-load_all()
+library(R.utils)
+library(progress)
+library(data.table)
+library(ConformalTwoLayer)
 
 # Read in arguments for start/end k (number of groups),
 # start/end n (number of observations per group),

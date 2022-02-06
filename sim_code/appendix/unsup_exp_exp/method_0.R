@@ -6,25 +6,12 @@
 #    Y_ji ~ Exp(theta_j) (i = 1, ..., n_j)
 #    theta_j ~ Exp(1)
 # Vary k from 5 to 100 in increments of 5, and 200 to 1000 in increments of 100.
-# Vary n from 5 to 100 in increments of 5, and 200 to 1000 in increments of 100.
-#
-# PREDICTION INTERVAL:
-# 1. Apply order statistic method to each of the k groups to get k intervals
-# [l_1, u_1], ..., [l_k, u_k] each at level 1-alpha/2.
-# l_1 is the floor((n + 1) * alpha/4) order statistic of the first sample,
-# u_1 is the ceiling((n + 1)*(1 - alpha/4)) order statistic of the first sample,
-# and so on for the other samples.
-# 2. Consider (l_1, ..., l_k). Take l_(r), where r = floor((k + 1) * alpha/4).
-# Consider (u_1, ..., u_k). Take u_(s), where s = ceiling((k + 1)*(1 - alpha/4)).
-# Prediction interval: C = [l_(r), u_(s)].
-#
-# RUNNING:
-# When running from shell, you can optionally enter four arguments:
-# start k, end k, start n, end n.
+# Let n = 100.
 
-suppressMessages(library(R.utils))
-suppressMessages(library(progress))
-suppressMessages(library(data.table))
+library(R.utils)
+library(progress)
+library(data.table)
+library(ConformalTwoLayer)
 
 # Read in arguments for start/end k (number of groups),
 # n (number of observations per group)

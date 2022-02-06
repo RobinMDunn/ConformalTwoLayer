@@ -8,21 +8,11 @@
 #    theta_j ~ N(0, tau^2 = 100)
 #    epsilon_ji ~ N(0, sigma^2 = 0.1)
 # Vary k from 20 to 100 in increments of 5.
-#
-# PREDICTION INTERVAL:
-# Sort all observations (Y) from low to high.
-# The interval [Y_(r), Y_(s)] is the prediction interval for a new observation,
-# where r = floor((N + 1) * alpha/2) and s = ceiling((N + 1)*(1 - alpha/2)).
-#
-# RUNNING:
-# When running from shell, you can optionally enter two arguments:
-# start k, end k.
 
-suppressMessages(library(R.utils))
-suppressMessages(library(progress))
-suppressMessages(library(data.table))
-library(devtools)
-load_all()
+library(R.utils)
+library(progress)
+library(data.table)
+library(ConformalTwoLayer)
 
 # Read in arguments for start/end k (number of groups) and
 # number of observations for small and large groups

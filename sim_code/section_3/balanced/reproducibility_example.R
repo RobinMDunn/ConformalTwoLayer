@@ -5,8 +5,7 @@ library(R.utils)
 library(data.table)
 library(tidyverse)
 library(progress)
-library(devtools)
-load_all()
+library(ConformalTwoLayer)
 
 # Data frame to store results
 pred_ints <- data.table(sim = 1:1000,

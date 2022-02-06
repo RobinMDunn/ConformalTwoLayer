@@ -2,12 +2,10 @@
 # theta_1, ..., theta_k ~ N(0,1)
 # Y_{ij} ~ N(theta_j, sd = sigma)
 
-suppressMessages(library(R.utils))
-suppressMessages(library(progress))
-suppressMessages(library(data.table))
-library(devtools)
-load_all()
-#library(ConformalRandomEffects)
+library(R.utils)
+library(progress)
+library(data.table)
+library(ConformalTwoLayer)
 
 # Read in arguments for start/end k (number of groups),
 # start/end n (number of observations per group),

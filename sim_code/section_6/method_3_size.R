@@ -2,13 +2,11 @@
 # one observation per group.
 # Data example: sleepstudy from lme4
 
-suppressMessages(library(R.utils))
-suppressMessages(library(progress))
-suppressMessages(library(tidyverse))
-suppressMessages(library(data.table))
-suppressMessages(library(lme4))
-library(devtools)
-load_all()
+library(progress)
+library(tidyverse)
+library(data.table)
+library(lme4)
+library(ConformalTwoLayer)
 
 # Read in arguments for start/end baseline response values
 start_bl_value <- 190

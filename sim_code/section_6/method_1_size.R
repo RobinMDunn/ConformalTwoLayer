@@ -1,12 +1,11 @@
 # Get supervised conformal interval using one observation per group
 # Data example: sleepstudy from lme4
 
-suppressMessages(library(progress))
-suppressMessages(library(tidyverse))
-suppressMessages(library(data.table))
-suppressMessages(library(lme4))
-library(devtools)
-load_all()
+library(progress)
+library(tidyverse)
+library(data.table)
+library(lme4)
+library(ConformalTwoLayer)
 
 # Set alpha level
 alpha <- 0.10

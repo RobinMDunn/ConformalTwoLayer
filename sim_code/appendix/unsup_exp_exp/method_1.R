@@ -6,21 +6,12 @@
 #    Y_ji ~ Exp(theta_j) (i = 1, ..., n_j)
 #    theta_j ~ Exp(1)
 # Vary k from 5 to 100 in increments of 5, and 200 to 1000 in increments of 100.
-# Vary n from 5 to 100 in increments of 5, and 200 to 1000 in increments of 100.
-#
-# PREDICTION INTERVAL:
-# Compute empirical CDF for each group.
-# Get lower and upper alpha/2 bounds from averaging empirical CDFs.
-#
-# RUNNING:
-# When running from shell, you can optionally enter four arguments:
-# start k, end k, start n, end n.
+# Let n = 100.
 
-suppressMessages(library(R.utils))
-suppressMessages(library(progress))
-suppressMessages(library(data.table))
-library(devtools)
-load_all()
+library(R.utils)
+library(progress)
+library(data.table)
+library(ConformalTwoLayer)
 
 # Read in arguments for start/end k (number of groups),
 # n (number of observations per group)

@@ -8,13 +8,11 @@
 # Repeat this entire procedure n_sim times to get n_sim estimates of coverage.
 # Data example: sleepstudy from lme4
 
-suppressMessages(library(progress))
-suppressMessages(library(tidyverse))
-suppressMessages(library(data.table))
-suppressMessages(library(lme4))
-suppressMessages(library(R.utils))
-library(devtools)
-load_all()
+library(progress)
+library(tidyverse)
+library(data.table)
+library(lme4)
+library(ConformalTwoLayer)
 
 # Read in arguments for start/end n_sim and alpha (0.1, 0.15, 0.2)
 start_n_sim <- 1

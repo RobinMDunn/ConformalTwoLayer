@@ -7,23 +7,11 @@
 #    theta_j ~ N(0, tau^2 = 100)
 #    epsilon_ji ~ N(0, sigma^2 = 0.1)
 # Vary k from 20 to 100 in increments of 5.
-#
-# PREDICTION INTERVAL:
-# Repeat 100 times:
-# - Choose one observation from each of the k groups. Call this Y_subsample.
-# - Get p-values of observations in Y_grid, based on Y_subsample construction.
-# Level alpha pred int: [y : 2*pval(y) >= alpha]
-# Level 2*alpha pred int: [y : pval(y) >= alpha]
-#
-# RUNNING:
-# When running from shell, you can optionally enter four arguments:
-# start_k, end_k, n_small, n_large.
 
-suppressMessages(library(R.utils))
-suppressMessages(library(progress))
-suppressMessages(library(data.table))
-library(devtools)
-load_all()
+library(R.utils)
+library(progress)
+library(data.table)
+library(ConformalTwoLayer)
 
 # Read in arguments for start/end k (number of groups) and
 # number of observations for small and large groups

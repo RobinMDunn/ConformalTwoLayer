@@ -6,26 +6,13 @@
 # The observation from group j (j = 1, ..., k) is distributed as
 #    Y_ji ~ Beta(theta_j, 1) (i = 1, ..., n_j)
 #    theta_j ~ Exp(1)
-# Vary k from 20 to 100 by 5 and from 200 to 1000 by 100.
-# Vary n from 5 to 100 by 5 and from 200 to 1000 by 100.
-#
-# PREDICTION INTERVAL:
-# Repeat 100 times:
-# - Choose one observation from each of the k groups. Call this Y_subsample.
-# - Sort all observations in Y_subsample from low to high.
-# The interval [Y_subsample_(r), Y_subsample_(s)] is the prediction interval
-# for a new observation,
-# where r = floor((k + 1) * alpha/2) and s = ceiling((k + 1)*(1 - alpha/2)).
-#
-# RUNNING:
-# When running from shell, you can optionally enter six arguments:
-# start k, end k, start n, end n.
+# Vary k from 5 to 100 in increments of 5, and 200 to 1000 in increments of 100.
+# Let n = 100.
 
-suppressMessages(library(R.utils))
-suppressMessages(library(progress))
-suppressMessages(library(data.table))
-library(devtools)
-load_all()
+library(R.utils)
+library(progress)
+library(data.table)
+library(ConformalTwoLayer)
 
 # Read in arguments for start/end k (number of groups),
 # n (number of observations per group)

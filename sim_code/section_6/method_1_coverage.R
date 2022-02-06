@@ -6,12 +6,11 @@
 # - Check whether model covers the reaction time in the held-out point.
 # Data example: sleepstudy from lme4
 
-suppressMessages(library(progress))
-suppressMessages(library(tidyverse))
-suppressMessages(library(data.table))
-suppressMessages(library(lme4))
-library(devtools)
-load_all()
+library(progress)
+library(tidyverse)
+library(data.table)
+library(lme4)
+library(ConformalTwoLayer)
 
 # Read in alpha level (0.10, 0.15, 0.20)
 alpha_start <- 0.1

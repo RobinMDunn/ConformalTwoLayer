@@ -29,7 +29,6 @@ pb <- progress_bar$new(format = paste0("sim :current / :total [:bar] :eta"),
                        total = nrow(pred_ints), clear = T, show_after = 0)
 
 # Repeatedly simulate methods 2 and 3
-#for(i in 1:nrow(pred_ints)) {
 for(i in 1:nrow(pred_ints)) {
 
   # Update progress bar

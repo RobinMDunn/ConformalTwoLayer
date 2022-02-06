@@ -2,16 +2,28 @@
 % Please edit documentation in R/sup_get_avg_pval.R
 \name{sup_get_avg_pval}
 \alias{sup_get_avg_pval}
-\title{Function to get average p-val}
+\title{Get average p-value for supervised repeated subsampling method}
 \usage{
 sup_get_avg_pval(xy_subsample_list, model_formula, X_new, Y_new)
 }
 \arguments{
-\item{Y_new}{}
+\item{xy_subsample_list}{List of data frames, where each data frame contains
+one observation per subject}
+
+\item{model_formula}{Linear model formula for mu.hat which will be fit
+on augmented sample}
+
+\item{X_new}{Covariate information for new observation}
+
+\item{Y_new}{Hypothetical outcome for new observation}
 }
 \value{
-
+Average p-value for new observation (X_new, Y_new)
 }
 \description{
-Function to get average p-val
+On each augmented subsample containing one observation per
+subject and (X_{k+1}, Y_{k+1}) = (X_new, Y_new), fit model mu.hat.
+Compute nonconformity scores R_i = |mu.hat(X_i) - Y_i|, i = 1, ..., k+1.
+The p-value pi_b for a given subsample is the proportion of R_i scores
+greater than or equal to R_{k+1}. Return average pi_b over all subsamples.
 }

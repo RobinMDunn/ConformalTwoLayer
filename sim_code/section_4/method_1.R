@@ -1,5 +1,4 @@
 # Get supervised conformal interval using naive pooling
-# Run from Conformal_Order_Stats directory
 # theta_1, ..., theta_k ~ N(mu, tau^2)
 # X_j1, ..., X_jn_j ~ N(0, 1)
 # Y_{ji} = theta_j*X_{ji} + epsilon_{ji}, epsilon_{ji} ~ N(0, sigma^2)

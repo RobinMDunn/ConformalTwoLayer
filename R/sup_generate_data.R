@@ -1,15 +1,21 @@
-#' Title
+#' Generate data for supervised normal examples
 #'
-#' @param k
-#' @param n
-#' @param mu
-#' @param tau_sq
-#' @param sigma_sq
+#' @description Draw distribution-specific parameters
+#' theta_1, ..., theta_k ~ N(mu, tau^2). For each distribution j,
+#' draw covariates X_j1, ..., X_jn_j ~ N(0, 1), and draw outcomes
+#' Y_{ji} = theta_j*X_{ji} + epsilon_{ji}, epsilon_{ji} ~ N(0, sigma^2).
 #'
-#' @return
+#' @param k Number of subjects
+#' @param n Number of observations from each subject. For our examples,
+#' we assume this is equal across subjects.
+#' @param mu Mean of parameter distribution
+#' @param tau_sq Variance of parameter distribution
+#' @param sigma_sq Variance of epsilon in response model
+#'
+#' @return A list of length k, where each item contains a data frame of
+#' observations from a single distribution
+#'
 #' @export
-#'
-#' @examples
 sup_generate_data <- function(k, n, mu, tau_sq, sigma_sq) {
 
   # Draw theta parameter for each of the k groups

@@ -91,10 +91,10 @@ for(row in 1:nrow(results)) {
       # Simulate data
       Y <- unsup_generate_data(k = k_val,
                                n_vec = c(rep(n_small, times = k_val - 1), n_large),
-                               tau_sq = 100, sigma_sq = 0.1)
+                               mu = 0, tau_sq = 100, sigma_sq = 0.1)
 
       # Generate a single new observation from a new group
-      new_Y <- unsup_generate_data(k = 1, n_vec = 1, tau_sq = 100,
+      new_Y <- unsup_generate_data(k = 1, n_vec = 1, mu = 0, tau_sq = 100,
                                    sigma_sq = 0.1)
 
       # Construct prediction set and check whether new_Y is in set

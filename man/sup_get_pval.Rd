@@ -2,16 +2,27 @@
 % Please edit documentation in R/sup_get_pval.R
 \name{sup_get_pval}
 \alias{sup_get_pval}
-\title{Function to get p-val}
+\title{Get p-value for supervised subsampling methods}
 \usage{
 sup_get_pval(xy_sample, model_formula, X_new, Y_new)
 }
 \arguments{
-\item{Y_new}{}
+\item{xy_sample}{Data frame containing one observation per subject}
+
+\item{model_formula}{Linear model formula for mu.hat which will be fit
+on augmented sample}
+
+\item{X_new}{Covariate information for new observation}
+
+\item{Y_new}{Hypothetical outcome for new observation}
 }
 \value{
-
+p-value for new observation (X_new, Y_new)
 }
 \description{
-Function to get p-val
+On a single augmented subsample containing one observation per
+subject and (X_{k+1}, Y_{k+1}) = (X_new, Y_new), fit model mu.hat.
+Compute nonconformity scores R_i = |mu.hat(X_i) - Y_i|, i = 1, ..., k+1.
+The p-value is the proportion of R_i scores
+greater than or equal to R_{k+1}.
 }

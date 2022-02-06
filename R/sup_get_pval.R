@@ -1,14 +1,20 @@
-#' Function to get p-val
+#' Get p-value for supervised subsampling methods
 #'
-#' @param X_sample
-#' @param Y_sample
-#' @param X_new
-#' @param Y_new
+#' @description On a single augmented subsample containing one observation per
+#' subject and (X_{k+1}, Y_{k+1}) = (X_new, Y_new), fit model mu.hat.
+#' Compute nonconformity scores R_i = |mu.hat(X_i) - Y_i|, i = 1, ..., k+1.
+#' The p-value is the proportion of R_i scores
+#' greater than or equal to R_{k+1}.
 #'
-#' @return
+#' @param xy_sample Data frame containing one observation per subject
+#' @param model_formula Linear model formula for mu.hat which will be fit
+#' on augmented sample
+#' @param X_new Covariate information for new observation
+#' @param Y_new Hypothetical outcome for new observation
+#'
+#' @return p-value for new observation (X_new, Y_new)
+#'
 #' @export
-#'
-#' @examples
 sup_get_pval <- function(xy_sample, model_formula, X_new, Y_new) {
 
   # Rename Y_new to agree with LHS of model_formula

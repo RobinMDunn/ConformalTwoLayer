@@ -1,14 +1,21 @@
-#' Function to get average p-val
+#' Get average p-value for supervised repeated subsampling method
 #'
-#' @param X_subsample_mat
-#' @param Y_subsample_mat
-#' @param X_new
-#' @param Y_new
+#' @description On each augmented subsample containing one observation per
+#' subject and (X_{k+1}, Y_{k+1}) = (X_new, Y_new), fit model mu.hat.
+#' Compute nonconformity scores R_i = |mu.hat(X_i) - Y_i|, i = 1, ..., k+1.
+#' The p-value pi_b for a given subsample is the proportion of R_i scores
+#' greater than or equal to R_{k+1}. Return average pi_b over all subsamples.
 #'
-#' @return
+#' @param xy_subsample_list List of data frames, where each data frame contains
+#' one observation per subject
+#' @param model_formula Linear model formula for mu.hat which will be fit
+#' on augmented sample
+#' @param X_new Covariate information for new observation
+#' @param Y_new Hypothetical outcome for new observation
+#'
+#' @return Average p-value for new observation (X_new, Y_new)
+#'
 #' @export
-#'
-#' @examples
 sup_get_avg_pval <- function(xy_subsample_list, model_formula, X_new, Y_new) {
 
   # Number of re-samples

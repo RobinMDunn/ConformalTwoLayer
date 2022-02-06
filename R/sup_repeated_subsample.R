@@ -1,14 +1,35 @@
-#' Title
+#' Supervised repeated subsampling method
 #'
-#' @param Y
-#' @param alpha
-#' @param n_val
-#' @param k_val
-#' @param n_resamp
-#' @param X_new
-#' @param Y_new
+#' @description Construct augmented subsamples containing one observation per
+#' subject and (X_{k+1}, Y_{k+1}) = (X_new, Y_new). On each augmented subsample,
+#' fit model mu.hat.
+#' Compute nonconformity scores R_i = |mu.hat(X_i) - Y_i|, i = 1, ..., k+1.
+#' The p-value pi_b for a given subsample is the proportion of R_i scores
+#' greater than or equal to R_{k+1}. At a given X_new = x, the prediction set
+#' is the set of all (x, y) with avg(pi_b) >= alpha.
 #'
-#' @return
+#' @param xy_data Data frame containing observations and outcomes for all
+#' subjects. Must include a Subject column that identifies subjects.
+#' @param model_formula Linear model formula for mu.hat which will be fit
+#' on augmented samples of one observation per subject plus hypothetical data
+#' on new subject
+#' @param alpha Significance level
+#' @param n_val Number of observations from each subject. For our examples,
+#' we assume this is equal across subjects.
+#' @param k_indices Labels of subjects to be treated as observed data
+#' @param n_resamp Number of repeated subsamples
+#' @param grid_values Vector of starting values to start for lower and upper
+#' bounds of prediction interval. Should contain values across the range of Y.
+#' @param new_xy_data Hypothetical covariate and outcome data for new subject
+#' @param coverage_only Indicates whether to only check coverage of new
+#' observation, without constructing prediction interval.
+#'
+#' @return List containing prediction interval size at new observation's
+#' covariate values, prediction interval
+#' lower bound at new observation's covariate values, prediction interval
+#' upper bound at new observation's covariate values, and whether new
+#' observation's outcome is contained inside prediction interval.
+#'
 #' @export
 sup_repeated_subsample <- function(xy_data, model_formula, alpha, n_val,
                                    k_indices, n_resamp, grid_values,

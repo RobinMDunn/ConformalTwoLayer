@@ -1,13 +1,32 @@
-#' Title
+#' Supervised single subsampling method
 #'
-#' @param Y
-#' @param alpha
-#' @param n_val
-#' @param k_indices
-#' @param X_new
-#' @param Y_new
+#' @description Construct one augmented subsample containing one observation per
+#' subject and (X_{k+1}, Y_{k+1}) = (X_new, Y_new). On the augmented subsample,
+#' fit model mu.hat. Compute nonconformity scores
+#' R_i = |mu.hat(X_i) - Y_i|, i = 1, ..., k+1.
+#' The p-value is the proportion of R_i scores
+#' greater than or equal to R_{k+1}. At a given X_new = x, the prediction set
+#' is the set of all (x, y) with p-values >= alpha.
 #'
-#' @return
+#' @param xy_data Data frame containing observations and outcomes for all
+#' subjects. Must include a Subject column that identifies subjects.
+#' @param model_formula Linear model formula for mu.hat which will be fit
+#' on augmented samples of one observation per subject plus hypothetical data
+#' on new subject
+#' @param alpha Significance level
+#' @param n_val Number of observations from each subject. For our examples,
+#' we assume this is equal across subjects.
+#' @param k_indices Labels of subjects to be treated as observed data
+#' @param grid_values Vector of starting values to start for lower and upper
+#' bounds of prediction interval. Should contain values across the range of Y.
+#' @param new_xy_data Hypothetical covariate and outcome data for new subject
+#'
+#' @return List containing prediction interval size at new observation's
+#' covariate values, prediction interval
+#' lower bound at new observation's covariate values, prediction interval
+#' upper bound at new observation's covariate values, and whether new
+#' observation's outcome is contained inside prediction interval.
+#'
 #' @export
 sup_single_subsample <- function(xy_data, model_formula, alpha, n_val, k_indices,
                                  grid_values, new_xy_data) {

@@ -1,5 +1,4 @@
 # Method 2: Shrinkage approach to predicting a new observation from group 1.
-# Run from Conformal_Order_Stats directory
 # theta_1, ..., theta_k ~ N(0,1)
 # Y_{ij} ~ N(theta_j, sd = sigma)
 
@@ -91,7 +90,7 @@ for(row in 1:nrow(results)){
       # Generate data, including an additional observation from group 1
       Y <- unsup_generate_data(k = k_val,
                                n_vec = c(n_val + 1, rep(n_val, length = k_val - 1)),
-                               tau_sq = 1, sigma_sq = sigma_sq_val)
+                               mu = 0, tau_sq = 1, sigma_sq = sigma_sq_val)
 
       # Extract Y_new as final observation from group 1
       Y_new <- tail(Y[[1]], 1)

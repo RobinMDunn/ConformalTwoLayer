@@ -22,7 +22,7 @@ set.seed(20211220)
 k_val <- 100
 n_val <- 100
 alpha <- 0.1
-Y <- unsup_generate_data(k = k_val, n_vec = rep(n_val, times = k_val),
+Y <- unsup_generate_data(k = k_val, n_vec = rep(n_val, times = k_val), mu = 0,
                          tau_sq = 1)
 
 # Set up progress bar

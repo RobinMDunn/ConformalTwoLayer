@@ -2,16 +2,28 @@
 % Please edit documentation in R/unsup_generate_data.R
 \name{unsup_generate_data}
 \alias{unsup_generate_data}
-\title{Title}
+\title{Generate data for unsupervised normal examples}
 \usage{
-unsup_generate_data(k, n_vec, tau_sq, sigma_sq = 1)
+unsup_generate_data(k, n_vec, mu, tau_sq, sigma_sq = 1)
 }
 \arguments{
-\item{sigma_sq}{}
+\item{k}{Number of subjects}
+
+\item{n_vec}{Vector of length k, representing number of observations from
+each subject. We allow this to vary across subjects.}
+
+\item{mu}{Mean of parameter distribution}
+
+\item{tau_sq}{Variance of parameter distribution}
+
+\item{sigma_sq}{Variance of observations in given distribution}
 }
 \value{
-
+A list of length k, where each item contains a vector of
+observations from a single distribution
 }
 \description{
-Title
+Draw distribution-specific parameters
+theta_1, ..., theta_k ~ N(mu, tau^2). For each distribution j,
+draw observations Y_j1, ..., Y_jn_j ~ N(theta_j, sigma^2).
 }

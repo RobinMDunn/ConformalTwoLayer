@@ -1,15 +1,28 @@
-#' Title
+#' Supervised CDF pooling method with sample splitting
 #'
-#' @param Y
-#' @param alpha
-#' @param k_model_fit
-#' @param X_new
-#' @param Y_new
+#' @description Construct CDF pooling prediction interval at the covariates
+#' of a new subject. This involves fitting a model mu.hat on the model fitting
+#' subset of subjects and fitting residuals on the remaining subjects.
+#' Compute quantiles q.hat(1-alpha) on the average empirical CDFs of the
+#' residuals. At new covariates x, the prediction interval is
+#' \[mu.hat(x) - q.hat(1-alpha), mu.hat(x) + q.hat(1-lapha)\].
 #'
-#' @return
+#' @param xy_data Data frame containing observations and outcomes for all
+#' subjects. Must include a Subject column that identifies subjects.
+#' @param model_formula Linear model formula for mu.hat which will be fit
+#' on all subjects in model fitting set
+#' @param alpha Significance level
+#' @param k_val Number of subjects
+#' @param k_model_fit Indices of subjects to use for model fitting
+#' @param k_resid_fit Indices of subjects to use for residual fitting
+#' @param new_xy_data Hypothetical covariate and outcome data for new subject
+#'
+#' @return List containing prediction interval size, prediction interval
+#' lower bound at new observation's covariate values, prediction interval
+#' upper bound at new observation's covariate values, and whether new
+#' observation's outcome is contained inside prediction interval.
+#'
 #' @export
-#'
-#' @examples
 sup_pool_cdfs_split <- function(xy_data, model_formula, alpha, k_val,
                                 k_model_fit, k_resid_fit, new_xy_data) {
 

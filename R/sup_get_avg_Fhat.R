@@ -1,12 +1,17 @@
-# Estimate Fhat at given threshold
+#' Estimate average F.hat_j(t) for CDF pooling with sample splitting
 #'
-#' @param threshold
-#' @param resid_fit
+#' @description Given residuals R_ji = |Y_ji - mu.hat(X_ji)| and a threshold
+#' t, compute F.hat_j(t) = (1/n_j) sum_{i=1}^{n_j} I(R_ji <= t).
+#' Then return average F.hat_j(t) over the subjects in the residual fitting
+#' group.
 #'
-#' @return
+#' @param threshold Value t at which we compute average of F.hat_j(t)
+#' @param resid_fit List of fitted residuals for supervised CDF pooling method
+#'
+#' @return Average F.hat_j(t) over the subjects in the residual fitting
+#' group.
+#'
 #' @export
-#'
-#' @examples
 sup_get_avg_Fhat <- function(threshold, resid_fit) {
 
   # Within-group fractions of resid <= threshold

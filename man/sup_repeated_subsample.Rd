@@ -2,7 +2,7 @@
 % Please edit documentation in R/sup_repeated_subsample.R
 \name{sup_repeated_subsample}
 \alias{sup_repeated_subsample}
-\title{Title}
+\title{Supervised repeated subsampling method}
 \usage{
 sup_repeated_subsample(
   xy_data,
@@ -17,11 +17,43 @@ sup_repeated_subsample(
 )
 }
 \arguments{
-\item{Y_new}{}
+\item{xy_data}{Data frame containing observations and outcomes for all
+subjects. Must include a Subject column that identifies subjects.}
+
+\item{model_formula}{Linear model formula for mu.hat which will be fit
+on augmented samples of one observation per subject plus hypothetical data
+on new subject}
+
+\item{alpha}{Significance level}
+
+\item{n_val}{Number of observations from each subject. For our examples,
+we assume this is equal across subjects.}
+
+\item{k_indices}{Labels of subjects to be treated as observed data}
+
+\item{n_resamp}{Number of repeated subsamples}
+
+\item{grid_values}{Vector of starting values to start for lower and upper
+bounds of prediction interval. Should contain values across the range of Y.}
+
+\item{new_xy_data}{Hypothetical covariate and outcome data for new subject}
+
+\item{coverage_only}{Indicates whether to only check coverage of new
+observation, without constructing prediction interval.}
 }
 \value{
-
+List containing prediction interval size at new observation's
+covariate values, prediction interval
+lower bound at new observation's covariate values, prediction interval
+upper bound at new observation's covariate values, and whether new
+observation's outcome is contained inside prediction interval.
 }
 \description{
-Title
+Construct augmented subsamples containing one observation per
+subject and (X_{k+1}, Y_{k+1}) = (X_new, Y_new). On each augmented subsample,
+fit model mu.hat.
+Compute nonconformity scores R_i = |mu.hat(X_i) - Y_i|, i = 1, ..., k+1.
+The p-value pi_b for a given subsample is the proportion of R_i scores
+greater than or equal to R_{k+1}. At a given X_new = x, the prediction set
+is the set of all (x, y) with avg(pi_b) >= alpha.
 }

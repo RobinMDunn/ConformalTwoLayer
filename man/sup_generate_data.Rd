@@ -2,16 +2,29 @@
 % Please edit documentation in R/sup_generate_data.R
 \name{sup_generate_data}
 \alias{sup_generate_data}
-\title{Title}
+\title{Generate data for supervised normal examples}
 \usage{
 sup_generate_data(k, n, mu, tau_sq, sigma_sq)
 }
 \arguments{
-\item{sigma_sq}{}
+\item{k}{Number of subjects}
+
+\item{n}{Number of observations from each subject. For our examples,
+we assume this is equal across subjects.}
+
+\item{mu}{Mean of parameter distribution}
+
+\item{tau_sq}{Variance of parameter distribution}
+
+\item{sigma_sq}{Variance of epsilon in response model}
 }
 \value{
-
+A list of length k, where each item contains a data frame of
+observations from a single distribution
 }
 \description{
-Title
+Draw distribution-specific parameters
+theta_1, ..., theta_k ~ N(mu, tau^2). For each distribution j,
+draw covariates X_j1, ..., X_jn_j ~ N(0, 1), and draw outcomes
+Y_{ji} = theta_j*X_{ji} + epsilon_{ji}, epsilon_{ji} ~ N(0, sigma^2).
 }

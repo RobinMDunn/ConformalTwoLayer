@@ -13,14 +13,20 @@ library(data.table)
 library(lme4)
 library(ConformalTwoLayer)
 
-# Read in alpha level (0.10, 0.15, 0.20)
-alpha <- 0.1
+# Read in start/end alpha levels (0.10, 0.15, 0.20)
+alpha_start <- 0.1
+alpha_end <- 0.2
 
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) > 0) {
   args <- as.numeric(args)
-  alpha <- args[1]
+  alpha_start <- args[1]
+  alpha_end <- args[2]
 }
+
+# Create alpha vector
+alpha_all <- c(0.10, 0.15, 0.20)
+alpha_vec <- alpha_all[alpha_start <= alpha_all & alpha_all <= alpha_end]
 
 # Set number of simulations
 n_sim <- 1000
@@ -44,21 +50,25 @@ n_rows <- nrow(sleep_df) # 162
 coverage_vec <- rep(NA, n_rows)
 
 # Construct data frame to store results
-results <- data.table(sim = 1:n_sim,
-                      alpha = alpha,
+results <- data.table(expand.grid(sim = 1:n_sim,
+                                  alpha = alpha_vec),
                       n_rows = n_rows,
                       coverage = NA_real_)
 
 # Set up progress bar
 pb <- progress_bar$new(format = paste0("Sim :current / :total",
                                        "[:bar] :eta"),
-                       total = n_sim, clear = T, show_after = 0)
+                       total = nrow(results), clear = T, show_after = 0)
 
 # Get coverage over 162 rows repeatedly. (Method has inherent randomness.)
-for(sim_index in 1:n_sim) {
+for(results_row in 1:nrow(results)) {
 
   # Increment progress bar
   pb$tick()
+
+  # Extra sim_index and alpha
+  sim_index <- results[results_row, sim]
+  alpha <- results[results_row, alpha]
 
   # Set seed
   set.seed(10000*alpha + sim_index)
@@ -93,10 +103,10 @@ for(sim_index in 1:n_sim) {
   }
 
   # Get overall coverage
-  results[sim == sim_index, coverage := mean(coverage_vec)]
+  results[results_row, coverage := mean(coverage_vec)]
 
 }
 
 # Save simulation results.
 fwrite(results, file = paste0("sim_data/section_6/method_2_coverage_point",
-                              as.integer(alpha*100), ".csv"))
+                              as.integer(alpha_start*100), ".csv"))

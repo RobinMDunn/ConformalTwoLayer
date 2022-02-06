@@ -1,15 +1,16 @@
-# Function: get_Y_tilde_1
-# Get Y_tilde_1 for group 1
-#
-# Y: List of observations, with one list element per group
-#' Title
+#' Get shrinkage estimate of mean for subject 1
 #'
-#' @param Y
+#' @description Compute James-Stein shrinkage estimate of mean for subject 1,
+#' using data from all subjects. For formula, see James-Stein Shrinkage
+#' section of "Distribution-Free Prediction Sets with Two-Layer
+#' Hierarchical Models" (Dunn et al., 2022).
 #'
-#' @return
+#' @param Y List containing data of all subjects. Each item in the list
+#' is a vector with one subject's observations.
+#'
+#' @return James-Stein shrinkage estimator of subject 1 mean
+#'
 #' @export
-#'
-#' @examples
 unsup_get_Y_tilde_1 <- function(Y){
 
   # Number of distinct groups

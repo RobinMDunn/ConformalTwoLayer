@@ -1,15 +1,17 @@
-#' Title
+#' Construct intervals based on order statistics
 #'
-#' @param Y
-#' @param alpha
-#' @param n_obs
+#' @description Helper function for unsupervised double conformal method.
+#' Construct interval defined by order statistics of sample:
+#'  \[Y_(floor((n_obs + 1) * alpha/2)), Y_(ceiling((n_obs + 1) * (1 - alpha/2)))\].
 #'
-#' @return
+#' @param Y Vector of observations
+#' @param alpha Significance level
+#' @param n_obs Number of observations in vector Y
+#'
+#' @return List containing lower bound and upper bound of interval
+#'
 #' @export
 unsup_pooled_pred_int <- function(Y, alpha, n_obs) {
-
-  # Convert entries of data matrix into a single vector
-  Y <- as.vector(Y)
 
   # Sort observations from low to high
   Y <- sort(Y)
@@ -18,7 +20,7 @@ unsup_pooled_pred_int <- function(Y, alpha, n_obs) {
   r <- floor((n_obs + 1) * alpha/2)
   s <- ceiling((n_obs + 1) * (1 - alpha/2))
 
-  # [Y_(r), Y_(s)] is the prediction interval for a new observation
+  # [Y_(r), Y_(s)] defines the interval
   lower_bound <- Y[r]
   upper_bound <- Y[s]
 

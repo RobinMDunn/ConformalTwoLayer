@@ -1,12 +1,18 @@
-#' Title
+#' Get p-value for unsupervised subsampling methods
 #'
-#' @param u
-#' @param Y_sorted
+#' @description On a subsample containing 1 observation from each of the k
+#' subjects, the p-value at u is inf\{alpha : u not in \[Y_{(r)}, Y_{(s)}\]\},
+#' where r = floor((k+1)(alpha/2)) and s = ceiling((k+1)(1-alpha/2)).
+#' The p-value is 1 if u is in \[Y_(floor((k+1)/2)), Y_(ceiling((k+1)/2))\].
+#' Return p-value of u.
 #'
-#' @return
+#' @param u Observation at which to compute p-value
+#' @param Y_sorted Subsample containing one observation per subject,
+#' sorted from smallest to largest
+#'
+#' @return p-value of u on subsample
+#'
 #' @export
-#'
-#' @examples
 unsup_get_pvalue <- function(u, Y_sorted) {
 
   # Number of observations

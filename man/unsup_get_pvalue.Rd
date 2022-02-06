@@ -2,16 +2,23 @@
 % Please edit documentation in R/unsup_get_pvalue.R
 \name{unsup_get_pvalue}
 \alias{unsup_get_pvalue}
-\title{Title}
+\title{Get p-value for unsupervised subsampling methods}
 \usage{
 unsup_get_pvalue(u, Y_sorted)
 }
 \arguments{
-\item{Y_sorted}{}
+\item{u}{Observation at which to compute p-value}
+
+\item{Y_sorted}{Subsample containing one observation per subject,
+sorted from smallest to largest}
 }
 \value{
-
+p-value of u on subsample
 }
 \description{
-Title
+On a subsample containing 1 observation from each of the k
+subjects, the p-value at u is inf\{alpha : u not in [Y_{(r)}, Y_{(s)}]\},
+where r = floor((k+1)(alpha/2)) and s = ceiling((k+1)(1-alpha/2)).
+The p-value is 1 if u is in [Y_(floor((k+1)/2)), Y_(ceiling((k+1)/2))].
+Return p-value of u.
 }

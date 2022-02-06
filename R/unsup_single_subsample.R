@@ -1,13 +1,23 @@
-#' Title
+#' Unsupervised single subsample method
 #'
-#' @param Y
-#' @param alpha
-#' @param k_val
+#' @description Construct subsample of one observation per subject.
+#' The p-value at u is inf\{alpha : u not in \[Y_{(r)}, Y_{(s)}\]\},
+#' where r = floor((k+1)(alpha/2)) and s = ceiling((k+1)(1-alpha/2)).
+#' The p-value is 1 if u is in \[Y_(floor((k+1)/2)), Y_(ceiling((k+1)/2))\].
+#' The single subsampling prediction interval is the set of all u with
+#' p-values >= alpha.
 #'
-#' @return
+#' @param Y List containing data of all subjects. Each item in the list
+#' is a vector with one subject's observations.
+#' @param alpha Significance level
+#' @param k_val Number of subjects
+#' @param new_Y Observation on new subject
+#'
+#' @return List containing prediction interval size, prediction interval
+#' lower bound, prediction interval upper bound, and whether new
+#' observation is contained inside prediction interval.
+#'
 #' @export
-#'
-#' @examples
 unsup_single_subsample <- function(Y, alpha, k_val, new_Y = NULL) {
 
   # Sample one observation from each of the k groups

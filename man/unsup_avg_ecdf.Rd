@@ -7,11 +7,16 @@
 unsup_avg_ecdf(Y, threshold)
 }
 \arguments{
-\item{threshold}{}
+\item{Y}{List containing data of all subjects. Each item in the list
+is a vector with one subject's observations.}
+
+\item{threshold}{Value t at which we compute average of F.hat_j(t)}
 }
 \value{
-
+Average F.hat_j(t) over all subjects
 }
 \description{
-Evaluate average empirical CDF at a certain threshold
+For each subject j, compute the empirical CDF
+F.hat_j(t) = (1/n_j) sum_{i=1}^{n_j} I(Y_ji <= t). Return the average
+F.hat_j(t) over all subjects.
 }

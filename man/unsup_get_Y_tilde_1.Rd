@@ -2,16 +2,20 @@
 % Please edit documentation in R/unsup_get_Y_tilde_1.R
 \name{unsup_get_Y_tilde_1}
 \alias{unsup_get_Y_tilde_1}
-\title{Title}
+\title{Get shrinkage estimate of mean for subject 1}
 \usage{
 unsup_get_Y_tilde_1(Y)
 }
 \arguments{
-\item{Y}{}
+\item{Y}{List containing data of all subjects. Each item in the list
+is a vector with one subject's observations.}
 }
 \value{
-
+James-Stein shrinkage estimator of subject 1 mean
 }
 \description{
-Title
+Compute James-Stein shrinkage estimate of mean for subject 1,
+using data from all subjects. For formula, see James-Stein Shrinkage
+section of "Distribution-Free Prediction Sets with Two-Layer
+Hierarchical Models" (Dunn et al., 2022).
 }

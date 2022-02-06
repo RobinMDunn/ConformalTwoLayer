@@ -2,16 +2,30 @@
 % Please edit documentation in R/unsup_single_subsample.R
 \name{unsup_single_subsample}
 \alias{unsup_single_subsample}
-\title{Title}
+\title{Unsupervised single subsample method}
 \usage{
 unsup_single_subsample(Y, alpha, k_val, new_Y = NULL)
 }
 \arguments{
-\item{k_val}{}
+\item{Y}{List containing data of all subjects. Each item in the list
+is a vector with one subject's observations.}
+
+\item{alpha}{Significance level}
+
+\item{k_val}{Number of subjects}
+
+\item{new_Y}{Observation on new subject}
 }
 \value{
-
+List containing prediction interval size, prediction interval
+lower bound, prediction interval upper bound, and whether new
+observation is contained inside prediction interval.
 }
 \description{
-Title
+Construct subsample of one observation per subject.
+The p-value at u is inf\{alpha : u not in [Y_{(r)}, Y_{(s)}]\},
+where r = floor((k+1)(alpha/2)) and s = ceiling((k+1)(1-alpha/2)).
+The p-value is 1 if u is in [Y_(floor((k+1)/2)), Y_(ceiling((k+1)/2))].
+The single subsampling prediction interval is the set of all u with
+p-values >= alpha.
 }

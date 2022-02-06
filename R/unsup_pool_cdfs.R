@@ -1,12 +1,21 @@
-#' Title
+#' Unsupervised CDF pooling method
 #'
-#' @param Y
-#' @param alpha
+#' @description Construct CDF pooling prediction interval for a new subject.
+#' At any value t and for each subject j, the empirical CDF is given by
+#' F.hat_j(t) = (1/n_j) sum_{i=1}^{n_j} I(Y_ji <= t). We let
+#' q.hat(alpha) = inf\{t : (1/k) sum_{j=1}^k F.hat_j(t) >= alpha\}.
+#' The CDF pooling prediction interval is \[q.hat(alpha/2), q.hat(1-alpha/2)\].
 #'
-#' @return
+#' @param Y List containing data of all subjects. Each item in the list
+#' is a vector with one subject's observations.
+#' @param alpha Significance level
+#' @param new_Y Observation on new subject
+#'
+#' @return List containing prediction interval size, prediction interval
+#' lower bound, prediction interval upper bound, and whether new
+#' observation is contained inside prediction interval.
+#'
 #' @export
-#'
-#' @examples
 unsup_pool_cdfs <- function(Y, alpha, new_Y = NULL) {
 
   # Get average of ECDFs over grid

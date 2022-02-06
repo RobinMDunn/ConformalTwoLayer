@@ -2,16 +2,23 @@
 % Please edit documentation in R/unsup_get_pval_group1.R
 \name{unsup_get_pval_group1}
 \alias{unsup_get_pval_group1}
-\title{Evaluate p-value of potential y value Y_new compared to sample Y_1}
+\title{Evaluate p-value of u compared to subject 1's sample}
 \usage{
-unsup_get_pval_group1(Y_new, Y_1)
+unsup_get_pval_group1(u, Y_1)
 }
 \arguments{
-\item{Y_1}{}
+\item{u}{Hypothetical new observation from subject 1}
+
+\item{Y_1}{Vector of observations from subject 1}
 }
 \value{
-
+p-value of u relative to subject 1's sample
 }
 \description{
-Evaluate p-value of potential y value Y_new compared to sample Y_1
+Helper function for method that predicts a new observation on
+subject 1 using only data from subject 1. Create augmented sample
+containing subject 1's observations and u. As nonconformity scores, compute
+the absolute difference between each observation in augmented sample and
+the augmented mean. The p-value is the proportion of observations in the
+augmented sample with nonconformity score >= u's nonconformity score.
 }

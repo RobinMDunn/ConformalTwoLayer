@@ -19,7 +19,7 @@
 #' @param k_indices Labels of subjects to be treated as observed data
 #' @param grid_values Vector of starting values to start for lower and upper
 #' bounds of prediction interval. Should contain values across the range of Y.
-#' @param new_xy_data Hypothetical covariate and outcome data for new subject
+#' @param new_xy_data Covariate and outcome data for new subject
 #'
 #' @return List containing prediction interval size at new observation's
 #' covariate values, prediction interval

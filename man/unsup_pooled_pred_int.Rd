@@ -2,16 +2,22 @@
 % Please edit documentation in R/unsup_pooled_pred_int.R
 \name{unsup_pooled_pred_int}
 \alias{unsup_pooled_pred_int}
-\title{Title}
+\title{Construct intervals based on order statistics}
 \usage{
 unsup_pooled_pred_int(Y, alpha, n_obs)
 }
 \arguments{
-\item{n_obs}{}
+\item{Y}{Vector of observations}
+
+\item{alpha}{Significance level}
+
+\item{n_obs}{Number of observations in vector Y}
 }
 \value{
-
+List containing lower bound and upper bound of interval
 }
 \description{
-Title
+Helper function for unsupervised double conformal method.
+Construct interval defined by order statistics of sample:
+[Y_(floor((n_obs + 1) * alpha/2)), Y_(ceiling((n_obs + 1) * (1 - alpha/2)))].
 }

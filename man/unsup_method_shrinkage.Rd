@@ -2,16 +2,33 @@
 % Please edit documentation in R/unsup_method_shrinkage.R
 \name{unsup_method_shrinkage}
 \alias{unsup_method_shrinkage}
-\title{Title}
+\title{Shrinkage method to construct prediction set for a new subject 1 observation}
 \usage{
 unsup_method_shrinkage(Y, alpha, Y_new = NULL)
 }
 \arguments{
-\item{Y_new}{}
+\item{Y}{List containing data of all subjects. Each item in the list
+is a vector with one subject's observations.}
+
+\item{alpha}{Significance level}
+
+\item{Y_new}{New observation on subject 1}
 }
 \value{
-
+List containing prediction interval size, prediction interval
+lower bound, prediction interval upper bound, and whether new
+observation is contained inside prediction interval.
 }
 \description{
-Title
+To check whether a potential y is in this interval, create
+an augmented sample containing subject 1's observations and y.
+Using this augmented sample and the observed data from the other subjects,
+compute the James-Stein shrinkage estimate of subject 1's mean.
+As the nonconformity score for each observation in the augmented subject 1 data,
+compute the absolute difference between each observation in subject 1's
+augmented sample and the shrinkage estimate. The p-value at y is the
+proportion of observations in the augmented sample with nonconformity
+score >= y's nonconformity score.
+The prediction set for a new observation on subject 1 is
+\{y : p-value(y) >= alpha\}.
 }

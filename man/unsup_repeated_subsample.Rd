@@ -2,16 +2,33 @@
 % Please edit documentation in R/unsup_repeated_subsample.R
 \name{unsup_repeated_subsample}
 \alias{unsup_repeated_subsample}
-\title{Title}
+\title{Unsupervised repeated subsampling method}
 \usage{
 unsup_repeated_subsample(Y, alpha, k_val, n_resamp, new_Y = NULL)
 }
 \arguments{
-\item{new_Y}{(needs to be optional)}
+\item{Y}{List containing data of all subjects. Each item in the list
+is a vector with one subject's observations.}
+
+\item{alpha}{Significance level}
+
+\item{k_val}{Number of subjects}
+
+\item{n_resamp}{Number of repeated subsamples}
+
+\item{new_Y}{Observation on new subject}
 }
 \value{
-
+List containing prediction interval size, prediction interval
+lower bound, prediction interval upper bound, and whether new
+observation is contained inside prediction interval.
 }
 \description{
-Title
+Construct n_resamp subsamples of one observation per subject.
+On a subsample b containing 1 observation from each of the k
+subjects, the p-value at u is inf\{alpha : u not in [Y^b_{(r)}, Y^b_{(s)}]\},
+where r = floor((k+1)(alpha/2)) and s = ceiling((k+1)(1-alpha/2)).
+The p-value is 1 if u is in [Y^b_(floor((k+1)/2)), Y^b_(ceiling((k+1)/2))].
+The repeated subsampling prediction interval is the set of all u with
+average p-values >= alpha.
 }

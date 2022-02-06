@@ -20,7 +20,7 @@
 #' @param n_resamp Number of repeated subsamples
 #' @param grid_values Vector of starting values to start for lower and upper
 #' bounds of prediction interval. Should contain values across the range of Y.
-#' @param new_xy_data Hypothetical covariate and outcome data for new subject
+#' @param new_xy_data Covariate and outcome data for new subject
 #' @param coverage_only Indicates whether to only check coverage of new
 #' observation, without constructing prediction interval.
 #'

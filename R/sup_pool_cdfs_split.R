@@ -15,7 +15,7 @@
 #' @param k_val Number of subjects
 #' @param k_model_fit Indices of subjects to use for model fitting
 #' @param k_resid_fit Indices of subjects to use for residual fitting
-#' @param new_xy_data Hypothetical covariate and outcome data for new subject
+#' @param new_xy_data Covariate and outcome data for new subject
 #'
 #' @return List containing prediction interval size, prediction interval
 #' lower bound at new observation's covariate values, prediction interval

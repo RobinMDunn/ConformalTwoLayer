@@ -29,7 +29,7 @@ on all subjects in model fitting set}
 
 \item{k_resid_fit}{Indices of subjects to use for residual fitting}
 
-\item{new_xy_data}{Hypothetical covariate and outcome data for new subject}
+\item{new_xy_data}{Covariate and outcome data for new subject}
 }
 \value{
 List containing prediction interval size, prediction interval

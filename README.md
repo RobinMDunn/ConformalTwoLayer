@@ -1,6 +1,6 @@
 # ConformalTwoLayer Repository Overview
 
-This repository contains code to replicate the results of [Distribution-free prediction sets with two-layer hierarchical models](https://arxiv.org/abs/1809.07441) by [Robin Dunn](https://robinmdunn.github.io/), [Larry Wasserman](https://www.stat.cmu.edu/~larry/), and [Aaditya Ramdas](http://www.stat.cmu.edu/~aramdas/). The `ConformalTwoLayer` library contains functions to reproduce the simulations.
+This repository contains code to replicate the results of [Distribution-free prediction sets for two-layer hierarchical models](https://arxiv.org/abs/1809.07441) by [Robin Dunn](https://robinmdunn.github.io/), [Larry Wasserman](https://www.stat.cmu.edu/~larry/), and [Aaditya Ramdas](http://www.stat.cmu.edu/~aramdas/). The `ConformalTwoLayer` library contains functions to reproduce the simulations.
 
 ## Folder contents
 

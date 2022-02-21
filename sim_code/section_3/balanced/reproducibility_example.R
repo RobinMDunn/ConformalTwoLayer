@@ -70,4 +70,4 @@ summary(pred_ints$method_3_ub)
 
 # Save results
 fwrite(pred_ints,
-       file = "data/unsupervised/method_2/method_2_3_bounds.csv")
+       file = "sim_data/section_3/reproducibility_example.csv")
